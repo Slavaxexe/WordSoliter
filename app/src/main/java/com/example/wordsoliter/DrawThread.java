@@ -22,6 +22,7 @@ public class DrawThread extends Thread {
     private volatile boolean running = true;
     private Paint backgroundPaint = new Paint();
     private Paint textPaint = new Paint();
+    private Paint paint = new Paint();
     private Levels levels;
     private int levelId;
     private float x, y;
@@ -154,6 +155,13 @@ public class DrawThread extends Thread {
                     for(int i = 0; i < level.size(); i++){
                         if (level.get(i).size() > 0){
                             canvas.drawText(level.get(i).get(level.get(i).size() - 1), i * textPaint.getTextSize(), textPaint.getTextSize() * 2, textPaint);
+                        }
+                    }
+                    paint.setColor(Color.BLACK);
+                    paint.setStyle(Paint.Style.STROKE);
+                    if (answers_word.size() > 0) {
+                        for (int i = 0; i < answers_word.get(answers_word.size() - 1).length(); i++) {
+                            canvas.drawRect(i * textPaint.getTextSize(), textPaint.getTextSize() * 3, (i + 1) * textPaint.getTextSize(), textPaint.getTextSize() * 4, paint);
                         }
                     }
                     for(int i = 0; i < user_answer.size(); i++){
