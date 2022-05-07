@@ -120,21 +120,8 @@ public class DrawThread extends Thread {
              Canvas canvas = surfaceHolder.lockCanvas();
             if (canvas != null) {
                 canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), backgroundPaint);
-                deck.drawDeck(canvas);
-
-                {//рисование ответа пользователя
-                    paint.setColor(Color.BLACK);
-                    paint.setStyle(Paint.Style.STROKE);
-                    int answer_size = deck.answers_ind.get(deck.answers_ind.size() - 1).size();
-                    if (answer_size > 0) {
-                        for (int i = 0; i < deck.answers_words.get(deck.answers_words.size() - 1).length(); i++) {
-                            canvas.drawRect(i * textPaint.getTextSize(), textPaint.getTextSize() * 3, (i + 1) * textPaint.getTextSize(), textPaint.getTextSize() * 4, paint);
-                        }
-                    }
-                    for (int i = 0; i < user_answer.size(); i++) {
-                        canvas.drawText(user_answer.get(i), i * textPaint.getTextSize(), textPaint.getTextSize() * 4, textPaint);
-                    }
-                }
+                deck.drawDeck(canvas, user_ind);
+                deck.drawUserAnswer(canvas, user_answer);
                 surfaceHolder.unlockCanvasAndPost(canvas);
             }
         }
