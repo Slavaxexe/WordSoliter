@@ -20,9 +20,6 @@ public class DrawThread extends Thread {
     private SurfaceHolder surfaceHolder;
     private volatile boolean running = true;
     private Paint backgroundPaint = new Paint();
-    private Paint textPaint = new Paint();
-    private Paint paint = new Paint();
-    private float x, y;
     private volatile boolean isGameStarted = false, isGameFinished = false;
     private ArrayList<String> user_answer;
     private ArrayList<Integer> user_ind;
@@ -52,8 +49,6 @@ public class DrawThread extends Thread {
 
     public void touchDetector(float x, float y){
         if (isGameStarted && !isGameFinished){
-            this.x = x;
-            this.y = y;
             int column = deck.onTouch(x, y);
             if (!(column == -1)) {
                 String letter = deck.level.get(column).get(deck.level.get(column).size() - 1);
@@ -103,8 +98,6 @@ public class DrawThread extends Thread {
                     R.drawable.cardback2);
             Canvas canvas = surfaceHolder.lockCanvas();
             double scale = (double) canvas.getWidth() / deck.level.size() / cardback.getWidth();
-            textPaint.setTextSize(canvas.getWidth() / (deck.level.size()));
-            textPaint.setStyle(Paint.Style.FILL);
             surfaceHolder.unlockCanvasAndPost(canvas);
             cardback = Bitmap.createScaledBitmap(cardback, (int) (cardback.getWidth() * scale), (int) (cardback.getHeight() * scale), true);
             Bitmap cardfront = BitmapFactory.decodeResource(context.getResources(),
