@@ -43,7 +43,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         float x, y;
         x = event.getX();
         y = event.getY();
-        drawThread.touchDetector(x, y);
+        drawThread.OnTouch(x, y);
         return false;
     }
 }

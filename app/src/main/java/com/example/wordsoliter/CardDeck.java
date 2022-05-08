@@ -1,58 +1,26 @@
 package com.example.wordsoliter;
 
 
-import static java.lang.Math.max;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class CardDeck {
-    int levelId;
-    Levels levels;
-    ArrayList<ArrayList<Integer>> answers_ind;
-    ArrayList<ArrayList<String>> level;
-    ArrayList<String> answers_words;
+    LevelGenerator.Level level;
     Bitmap cardback;
     Bitmap cardfront;
 
-    public CardDeck(int id){
-        //Создание уровня
-        levelId = id;
-        levels = new Levels();
-        level = new ArrayList<>();
-        answers_ind = new ArrayList<>();
-        answers_words = new ArrayList<>();
-        for (int i = 0; i < levels.getCountColumn(levelId); i++)
-            level.add(new ArrayList<String>());
-        for (String word : levels.getLevel(levelId)) {
-            ArrayList<Integer> ans_ind = new ArrayList<>();
-            ArrayList<Integer> possibleColumn = new ArrayList<>();
-            for (int i = 0; i < levels.getCountColumn(levelId); i++) possibleColumn.add(i);
-            for (int j = 0; j < word.length(); j++) {
-                int a = getRandomInt(possibleColumn.size());
-                ans_ind.add(possibleColumn.get(a));
-                level.get(possibleColumn.get(a)).add(String.valueOf(word.charAt(j)));
-                possibleColumn.remove(a);
-            }
-            Collections.sort(ans_ind);
-            answers_words.add(word);
-            answers_ind.add(ans_ind);
-        }
+    public CardDeck(LevelGenerator.Level level){
+        this.level = level;
     }
 
     public void setBitmaps(Bitmap cardback, Bitmap cardfront){
         this.cardback = cardback;
         this.cardfront = cardfront;
-    }
-
-    public static int getRandomInt(int max) {
-        return (int) Math.floor(Math.random() * max);
     }
 
     public void drawDeck(Canvas canvas, ArrayList<Integer> user_ind){
@@ -87,7 +55,7 @@ public class CardDeck {
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setTextSize(100);
         int h = cardback.getHeight() / 10;
-        int answer_size = answers_ind.get(answers_ind.size() - 1).size();
+        int answer_size = level.answers_ind.get(level.answers_ind.size() - 1).size();
         if (user_answer.size() > 0) {
             for (int i = 0; i < user_answer.size(); i++) {
                 Rect boundsText = new Rect();

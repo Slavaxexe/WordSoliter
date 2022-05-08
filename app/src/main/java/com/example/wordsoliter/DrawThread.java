@@ -1,7 +1,6 @@
 package com.example.wordsoliter;
 
 
-import static java.lang.Math.max;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -9,14 +8,19 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class DrawThread extends Thread {
-
+    private LevelGenerator.Level level;
     private SurfaceHolder surfaceHolder;
     private volatile boolean running = true;
     private Paint backgroundPaint = new Paint();
@@ -47,18 +51,18 @@ public class DrawThread extends Thread {
         running = false;
     }
 
-    public void touchDetector(float x, float y){
+    public void OnTouch(float x, float y){
         if (isGameStarted && !isGameFinished){
             int column = deck.onTouch(x, y);
             if (!(column == -1)) {
-                String letter = deck.level.get(column).get(deck.level.get(column).size() - 1);
+                String letter = level.get(column).get(level.get(column).size() - 1);
                 user_answer.add(letter);
                 user_ind.add(column);
-                ArrayList<Integer> answer = deck.answers_ind.get(deck.answers_ind.size() - 1);
+                ArrayList<Integer> answer = level.answers_ind.get(level.answers_ind.size() - 1);
                 if (user_answer.size() == answer.size()){
                     boolean f = true;
                     for(int i = 0; i < user_answer.size(); i++){
-                        if (user_answer.get(i).charAt(0) != deck.answers_words.get(deck.answers_words.size() - 1). charAt(i)){
+                        if (user_answer.get(i).charAt(0) != level.answers_words.get(level.answers_words.size() - 1). charAt(i)){
                             Toast.makeText(context, "Неправильное слово", Toast.LENGTH_SHORT).show();
                             f = false;
                             break;
@@ -66,17 +70,17 @@ public class DrawThread extends Thread {
                     }
                     if (f) {
                         Collections.sort(user_ind);
-                        if (!user_ind.equals(deck.answers_ind.get(deck.answers_ind.size() - 1))) {
+                        if (!user_ind.equals(level.answers_ind.get(level.answers_ind.size() - 1))) {
                             Toast.makeText(context, "Попробуй другие буквы", Toast.LENGTH_SHORT).show();
                         }
                         else {
                             Toast.makeText(context, "Правильно!", Toast.LENGTH_SHORT).show();
-                            deck.answers_words.remove(deck.answers_words.size() - 1);
-                            deck.answers_ind.remove(deck.answers_ind.size() - 1);
+                            level.answers_words.remove(level.answers_words.size() - 1);
+                            level.answers_ind.remove(level.answers_ind.size() - 1);
                             for (int i = 0; i < user_ind.size(); i++){
-                                deck.level.get(user_ind.get(i)).remove(deck.level.get(user_ind.get(i)).size() - 1);
+                                level.get(user_ind.get(i)).remove(level.get(user_ind.get(i)).size() - 1);
                             }
-                            if (deck.answers_words.size() == 0){
+                            if (level.answers_words.size() == 0){
                                 Toast.makeText(context, "Вы победили!", Toast.LENGTH_SHORT).show();
                                 isGameFinished = true;
                             }
@@ -92,18 +96,41 @@ public class DrawThread extends Thread {
 
     @Override
     public void run() {
-        {//создание колоды
-            deck = new CardDeck(0);
-            Bitmap cardback = BitmapFactory.decodeResource(context.getResources(),
-                    R.drawable.cardback2);
-            Canvas canvas = surfaceHolder.lockCanvas();
-            double scale = (double) canvas.getWidth() / deck.level.size() / cardback.getWidth();
-            surfaceHolder.unlockCanvasAndPost(canvas);
-            cardback = Bitmap.createScaledBitmap(cardback, (int) (cardback.getWidth() * scale), (int) (cardback.getHeight() * scale), true);
-            Bitmap cardfront = BitmapFactory.decodeResource(context.getResources(),
-                    R.drawable.cardfront2);
-            cardfront = Bitmap.createScaledBitmap(cardfront, (int) (cardfront.getWidth() * scale), (int) (cardfront.getHeight() * scale), true);
-            deck.setBitmaps(cardback, cardfront);
+        {//создание колоды и уровня
+            LevelGenerator levelGenerator = null;
+            try {
+                InputStream is = context.getAssets().open("dictionary.txt");
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+                ArrayList<String> dict = new ArrayList<>();
+                String line;
+                int i = 0;
+                while ((line = reader.readLine()) != null) {
+                    dict.add(line);
+                    i++;
+                }
+                levelGenerator = new LevelGenerator(dict);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            {
+                level = levelGenerator.generateLevel(0);
+                deck = new CardDeck(level);
+                Bitmap cardback = BitmapFactory.decodeResource(context.getResources(),
+                        R.drawable.cardback2);
+                Canvas canvas = surfaceHolder.lockCanvas();
+                double scale = (double) canvas.getWidth() / deck.level.size() / cardback.getWidth();
+                surfaceHolder.unlockCanvasAndPost(canvas);
+                cardback = Bitmap.createScaledBitmap(cardback, (int) (cardback.getWidth() * scale), (int) (cardback.getHeight() * scale), true);
+                Bitmap cardfront = BitmapFactory.decodeResource(context.getResources(),
+                        R.drawable.cardfront2);
+                cardfront = Bitmap.createScaledBitmap(cardfront, (int) (cardfront.getWidth() * scale), (int) (cardfront.getHeight() * scale), true);
+                deck.setBitmaps(cardback, cardfront);
+                {// подсказки
+                    for (int i = level.answers_words.size() - 1; i > -1; i--) {
+                        Log.e("Answers", level.answers_words.get(i));
+                    }
+                }
+            }
         }
 
         isGameStarted = true;
