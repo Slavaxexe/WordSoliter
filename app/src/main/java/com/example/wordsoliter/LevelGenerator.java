@@ -18,12 +18,12 @@ public class LevelGenerator {
         int l = 0;
         int r = 6979;
         int countWords = 10;
-        int minLenWord = 3;
-        int maxLenWord = 8;
+        int minLenWord = 4;
+        int maxLenWord = 6;
         switch (tier) {
             case (1):
                 l = 0;
-                r = 6979;
+                r = 2000;
                 break;
             case (2):
                 l = 0;

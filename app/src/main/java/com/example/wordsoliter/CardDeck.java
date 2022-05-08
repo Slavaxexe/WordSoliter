@@ -13,19 +13,33 @@ public class CardDeck {
     LevelGenerator.Level level;
     Bitmap cardback;
     Bitmap cardfront;
+    Bitmap emptycard;
+    int h;
 
     public CardDeck(LevelGenerator.Level level){
         this.level = level;
     }
 
-    public void setBitmaps(Bitmap cardback, Bitmap cardfront){
+    public void setBitmaps(Bitmap cardback, Bitmap cardfront, Bitmap emptycard){
         this.cardback = cardback;
         this.cardfront = cardfront;
+        this.emptycard = emptycard;
+    }
+
+    public void drawCard(Canvas canvas, Bitmap card, float x, float y, String letter, Paint paint){
+        canvas.drawBitmap(card, x, y, paint);
+        if (letter != null){
+            Rect boundsText = new Rect();
+            paint.getTextBounds(letter, 0, 1, boundsText);
+            float xl = x + ((float) cardback.getWidth()  - boundsText.width()) / 2;
+            float yl = y + ((float) cardfront.getHeight() + boundsText.height()) / 2;
+            canvas.drawText(letter, xl, yl, paint);
+        }
     }
 
     public void drawDeck(Canvas canvas, ArrayList<Integer> user_ind){
         float x = 0;
-        float h = (float) cardback.getHeight() / 10;
+        h = cardback.getHeight() / 10;
         int textsize = 150;
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setTextSize(100);
@@ -33,48 +47,45 @@ public class CardDeck {
                 ArrayList<String> column = level.get(i);
                 int y = 0;
                 for(int j = 0; j < column.size() - 1; j++){
-                    canvas.drawBitmap(cardback, x, y, paint);
+                    drawCard(canvas, cardback, x, y, null, paint);
                     y += h;
                 }
-                if (!user_ind.contains(i))  canvas.drawBitmap(cardfront, x, y, paint);
+                if (!user_ind.contains(i) && level.get(i).size() != 0)  drawCard(canvas, cardfront, x, y, level.get(i).get(level.get(i).size() - 1), paint);;
                 x += (float) canvas.getWidth() / level.size();
             }
-            for (int i = 0; i < level.size(); i++) {
-                if (level.get(i).size() > 0 && !user_ind.contains(i)) {
-                    Rect boundsText = new Rect();
-                    String letter = level.get(i).get(level.get(i).size() - 1);
-                    paint.getTextBounds(letter, 0, 1, boundsText);
-                    x = i * cardback.getWidth() + ((float) cardback.getWidth()  - boundsText.width()) / 2;
-                    float y = (level.get(i).size() - 1) * h + ((float) cardfront.getHeight() + boundsText.height()) / 2;
-                    canvas.drawText(letter, x, y, paint);
-                }
-            }
     }
 
-    public void drawUserAnswer(Canvas canvas, ArrayList<String> user_answer){
+    public void drawUserAnswer(Canvas canvas, ArrayList<String> user_answer, int x){
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setTextSize(100);
-        int h = cardback.getHeight() / 10;
-        int answer_size = level.answers_ind.get(level.answers_ind.size() - 1).size();
+        for (int i = 0; i < level.answers_words.get(level.answers_words.size() - 1).length(); i++){
+            drawCard(canvas, emptycard, emptycard.getWidth() * i, cardfront.getHeight() * 4, null, paint);
+        }
         if (user_answer.size() > 0) {
-            for (int i = 0; i < user_answer.size(); i++) {
-                Rect boundsText = new Rect();
+            for (int i = 0; i < user_answer.size() - x; i++) {
                 String letter = user_answer.get(i);
-                paint.getTextBounds(letter, 0, 1, boundsText);
-                float x = i * cardback.getWidth() + ((float) cardback.getWidth()  - boundsText.width()) / 2;
-                float y = cardfront.getHeight() * 4 + ((float) cardfront.getHeight() + boundsText.height()) / 2;
-                canvas.drawBitmap(cardfront, cardfront.getWidth() * i, cardfront.getHeight() * 4, paint);
-                canvas.drawText(letter, x, y, paint);
+                drawCard(canvas, cardfront, cardfront.getWidth() * i, cardfront.getHeight() * 4, letter, paint);
             }
         }
     }
 
-    public int onTouch(float x, float y){
+    public int[] getCoordsEmptyCard(int i){
+
+        return new int[]{cardfront.getWidth() * i, cardfront.getHeight() * 4};
+    }
+
+    public ArrayList<Integer> onTouch(float x, float y){
         int column = (int) (x / cardback.getWidth());
-        if((level.get(column).size() - 1) * ((float) cardback.getHeight() / 10) < y && (level.get(column).size() - 1) * ((float) cardback.getHeight() / 10) + cardback.getHeight() > y){
-            return column;
+        ArrayList<Integer> a = new ArrayList<>();
+        if((level.get(column).size() - 1) * (h) < y && (level.get(column).size() - 1) * (h) + cardback.getHeight() > y){
+            a.add(column);
+            a.add(column * cardback.getWidth());
+            a.add((level.get(column).size() - 1) * (h));
         }
-        else return -1;
+        else {
+            a.add(-1);
+        }
+        return (a);
     }
 
 
