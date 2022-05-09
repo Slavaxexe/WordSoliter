@@ -6,8 +6,10 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CardDeck {
     LevelGenerator.Level level;
@@ -37,7 +39,7 @@ public class CardDeck {
         }
     }
 
-    public void drawDeck(Canvas canvas, ArrayList<Integer> user_ind){
+    public void drawDeck(Canvas canvas, ArrayList<Integer> user_ind, int cardc){
         float x = 0;
         h = cardback.getHeight() / 10;
         int textsize = 150;
@@ -50,22 +52,21 @@ public class CardDeck {
                     drawCard(canvas, cardback, x, y, null, paint);
                     y += h;
                 }
-                if (!user_ind.contains(i) && level.get(i).size() != 0)  drawCard(canvas, cardfront, x, y, level.get(i).get(level.get(i).size() - 1), paint);;
+                if (!user_ind.contains(i) && level.get(i).size() != 0 && i != cardc)  drawCard(canvas, cardfront, x, y, level.get(i).get(level.get(i).size() - 1), paint);;
                 x += (float) canvas.getWidth() / level.size();
             }
     }
 
-    public void drawUserAnswer(Canvas canvas, ArrayList<String> user_answer, int x){
+    public void drawUserAnswer(Canvas canvas, String[] user_answer, int x){
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setTextSize(100);
         for (int i = 0; i < level.answers_words.get(level.answers_words.size() - 1).length(); i++){
             drawCard(canvas, emptycard, emptycard.getWidth() * i, cardfront.getHeight() * 4, null, paint);
         }
-        if (user_answer.size() > 0) {
-            for (int i = 0; i < user_answer.size() - x; i++) {
-                String letter = user_answer.get(i);
-                drawCard(canvas, cardfront, cardfront.getWidth() * i, cardfront.getHeight() * 4, letter, paint);
-            }
+        for (int i = 0; i < user_answer.length - x; i++) {
+            String letter = user_answer[i];
+            if (!letter.equals("!"))
+            drawCard(canvas, cardfront, cardfront.getWidth() * i, cardfront.getHeight() * 4, letter, paint);
         }
     }
 
@@ -86,6 +87,14 @@ public class CardDeck {
             a.add(-1);
         }
         return (a);
+    }
+    public int onUp(float x, float y){
+        if (y > cardfront.getHeight() * 4 && y < cardfront.getHeight() * 5){
+            if (x > 0 && x < emptycard.getWidth() * level.answers_words.get(level.answers_words.size() - 1).length()){
+                return (int) (x / emptycard.getWidth());
+            }
+        }
+        return -1;
     }
 
 

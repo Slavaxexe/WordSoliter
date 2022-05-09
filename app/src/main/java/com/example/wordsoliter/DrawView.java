@@ -1,9 +1,12 @@
 package com.example.wordsoliter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -40,10 +43,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
     }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        float x, y;
-        x = event.getX();
-        y = event.getY();
-        drawThread.OnTouch(x, y);
-        return false;
+        drawThread.OnTouch(event);
+        return true;
     }
 }
