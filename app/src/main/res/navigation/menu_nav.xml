@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/menu_nav"
+    app:startDestination="@id/play">
+
+    <fragment
+        android:id="@+id/play"
+        android:name="com.example.wordsoliter.Play"
+        android:label="@string/play"
+        tools:layout="@layout/fragment_play" />
+    <fragment
+        android:id="@+id/shop"
+        android:name="com.example.wordsoliter.Shop"
+        android:label="@string/shop"
+        tools:layout="@layout/fragment_shop" />
+    <fragment
+        android:id="@+id/statistics"
+        android:name="com.example.wordsoliter.Statistics"
+        android:label="@string/stat"
+        tools:layout="@layout/fragment_statistics" />
+</navigation>
