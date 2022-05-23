@@ -61,18 +61,18 @@ public class CardDeck {
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setTextSize(100);
         for (int i = 0; i < level.answers_words.get(level.answers_words.size() - 1).length(); i++){
-            drawCard(canvas, emptycard, emptycard.getWidth() * i, cardfront.getHeight() * 4, null, paint);
+            drawCard(canvas, emptycard, emptycard.getWidth() * i, cardfront.getHeight() * 3, null, paint);
         }
         for (int i = 0; i < user_answer.length - x; i++) {
             String letter = user_answer[i];
             if (!letter.equals("!"))
-            drawCard(canvas, cardfront, cardfront.getWidth() * i, cardfront.getHeight() * 4, letter, paint);
+            drawCard(canvas, cardfront, cardfront.getWidth() * i, cardfront.getHeight() * 3, letter, paint);
         }
     }
 
     public int[] getCoordsEmptyCard(int i){
 
-        return new int[]{cardfront.getWidth() * i, cardfront.getHeight() * 4};
+        return new int[]{cardfront.getWidth() * i, cardfront.getHeight() * 3};
     }
 
     public ArrayList<Integer> onTouch(float x, float y){
@@ -89,7 +89,7 @@ public class CardDeck {
         return (a);
     }
     public int onUp(float x, float y){
-        if (y > cardfront.getHeight() * 4 && y < cardfront.getHeight() * 5){
+        if (y > cardfront.getHeight() * 3 && y < cardfront.getHeight() * 4){
             if (x > 0 && x < emptycard.getWidth() * level.answers_words.get(level.answers_words.size() - 1).length()){
                 return (int) (x / emptycard.getWidth());
             }

@@ -5,19 +5,21 @@ import java.util.Collections;
 import java.util.stream.Collectors;
 
 public class LevelGenerator {
-    private ArrayList<ArrayList<String>> level = new ArrayList<>();
-    private ArrayList<String> dictWords = new ArrayList<>();
-    private ArrayList<Float> dictRate = new ArrayList<>();
+    private final ArrayList<ArrayList<String>> level = new ArrayList<>();
+    private final ArrayList<String> dictWords = new ArrayList<>();
+    private final ArrayList<Float> dictRate = new ArrayList<>();
+
     public LevelGenerator(ArrayList<String> dictionary) {
-        for (String line: dictionary){
+        for (String line : dictionary) {
             dictWords.add(line.split(" ")[0]);
             dictRate.add(Float.valueOf(line.split(" ")[1]));
         }
     }
-    public Level generateLevel(int tier){
+
+    public Level generateLevel(int tier) {
         int l = 0;
         int r = 6979;
-        int countWords = 10;
+        int countWords = 6;
         int minLenWord = 4;
         int maxLenWord = 6;
         switch (tier) {
@@ -39,30 +41,30 @@ public class LevelGenerator {
                 break;
         }
         ArrayList<String> dictForLevel = new ArrayList<>(dictWords.subList(l, r));
-        dictForLevel = dictForLevel.stream().filter(x -> x.length() <= maxLenWord && x.length() >= minLenWord).collect(Collectors.toCollection(ArrayList:: new));
+        dictForLevel = dictForLevel.stream().filter(x -> x.length() <= maxLenWord && x.length() >= minLenWord).collect(Collectors.toCollection(ArrayList::new));
         Collections.shuffle(dictForLevel);
         ArrayList<String> words = new ArrayList<>();
-        for(int i = 0; i < countWords; i++){
+        for (int i = 0; i < countWords; i++) {
             words.add(dictForLevel.get(i));
         }
         return new Level(words);
     }
 
-    public String get(int ind){
+    public String get(int ind) {
         return dictWords.get(ind);
     }
 
-    class Level{
+    class Level {
         ArrayList<ArrayList<Integer>> answers_ind;
         ArrayList<ArrayList<String>> level;
         ArrayList<String> answers_words;
 
-        Level(ArrayList<String> words){
+        Level(ArrayList<String> words) {
             int CountColumn = words.get(0).length();
             int index = 0;
 
-            for(int i = 0; i < words.size(); i++) {
-                if(words.get(i).length() > CountColumn) {
+            for (int i = 0; i < words.size(); i++) {
+                if (words.get(i).length() > CountColumn) {
                     CountColumn = words.get(i).length();
                     index = i;
                 }
@@ -88,14 +90,15 @@ public class LevelGenerator {
             }
         }
 
-        public  int getRandomInt(int max) {
+        public int getRandomInt(int max) {
             return (int) Math.floor(Math.random() * max);
         }
 
-        public int size(){
+        public int size() {
             return level.size();
         }
-        public ArrayList<String> get(int ind){
+
+        public ArrayList<String> get(int ind) {
             return level.get(ind);
         }
     }

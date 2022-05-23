@@ -1,5 +1,6 @@
 package com.example.wordsoliter;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -63,11 +63,40 @@ public class Play extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_play,
                 container, false);
-        Button nextButton =  view.findViewById(R.id.playbutton);
-        nextButton.setOnClickListener(new View.OnClickListener() {
+        Button easyButton =  view.findViewById(R.id.playbuttoneasy);
+        easyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(view.getContext(), "УРавоыаыва", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(view.getContext(), GameActivity.class);
+                intent.putExtra("mode", 1);
+                startActivity(intent);
+            }
+        });
+        Button normalButton =  view.findViewById(R.id.playbuttonnormal);
+        normalButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(view.getContext(), GameActivity.class);
+                intent.putExtra("mode", 2);
+                startActivity(intent);
+            }
+        });
+        Button hardButton =  view.findViewById(R.id.playbuttonhard);
+        hardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(view.getContext(), GameActivity.class);
+                intent.putExtra("mode", 3);
+                startActivity(intent);
+            }
+        });
+        Button insaneButton =  view.findViewById(R.id.playbuttoninsane);
+        insaneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(view.getContext(), GameActivity.class);
+                intent.putExtra("mode", 4);
+                startActivity(intent);
             }
         });
         return view;

@@ -1,26 +1,25 @@
 package com.example.wordsoliter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
-    private DrawThread drawThread;
+    private GameSession gameSession;
+    public int tier;
 
-    public DrawView(Context context) {
+    public DrawView(Context context, int i) {
         super(context);
         getHolder().addCallback(this);
+        tier = i;
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        drawThread = new DrawThread(getContext(), getHolder());
-        drawThread.start();
+        gameSession = new GameSession(getContext(), getHolder(), tier);
+        gameSession.start();
     }
 
     @Override
@@ -30,20 +29,24 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        drawThread.requestStop();
+        gameSession.requestStop();
         boolean retry = true;
         while (retry) {
             try {
-                drawThread.join();
+                gameSession.join();
                 retry = false;
             } catch (InterruptedException e) {
                 //
             }
         }
     }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        drawThread.OnTouch(event);
+        gameSession.OnTouch(event);
         return true;
+    }
+    public void getHint(){
+        gameSession.getHint();
     }
 }

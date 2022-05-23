@@ -1,19 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/playbutton"
-        android:layout_width="360dp"
-        android:layout_height="77dp"
+        android:id="@+id/playbuttoneasy"
+        android:layout_width="343dp"
+        android:layout_height="64dp"
         android:background="@drawable/buttons_menu"
-        android:text="@string/normal_mode"
+        android:backgroundTint="#1CAC78"
+        android:text="@string/easy"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.234" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/playbuttonnormal"
+        android:layout_width="343dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/buttons_menu"
+        android:backgroundTint="#F5A623"
+        android:text="@string/normal"
+        app:layout_constraintEnd_toEndOf="@+id/playbuttoneasy"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/playbuttoneasy"
+        app:layout_constraintTop_toBottomOf="@+id/playbuttoneasy" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/playbuttonhard"
+        android:layout_width="343dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/buttons_menu"
+        android:backgroundTint="#FD364E"
+        android:text="@string/hard"
+        app:layout_constraintEnd_toEndOf="@+id/playbuttonnormal"
+        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintStart_toStartOf="@+id/playbuttonnormal"
+        app:layout_constraintTop_toBottomOf="@+id/playbuttonnormal" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/playbuttoninsane"
+        android:layout_width="343dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/buttons_menu"
+        android:backgroundTint="#9013FE"
+        android:text="@string/insane"
+        app:layout_constraintEnd_toEndOf="@+id/playbuttonhard"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/playbuttonhard"
+        app:layout_constraintTop_toBottomOf="@+id/playbuttonhard" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

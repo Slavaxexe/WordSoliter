@@ -1,5 +1,8 @@
 package com.example.wordsoliter;
 
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +10,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +24,7 @@ public class Shop extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private  OpenDbHelper DbHelper;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -58,7 +64,41 @@ public class Shop extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_shop, container, false);
+        View view = inflater.inflate(R.layout.fragment_shop,
+                container, false);
+        Bitmap card1 = BitmapFactory.decodeResource(view.getResources(), R.drawable.cardback1);
+        ImageButton cardb1 = view.findViewById(R.id.card_1);
+        card1 = Bitmap.createScaledBitmap(card1, 150,  250, true);
+
+        Bitmap card2 = BitmapFactory.decodeResource(view.getResources(), R.drawable.cardback2);
+        ImageButton cardb2 = view.findViewById(R.id.card_2);
+        card2 = Bitmap.createScaledBitmap(card2, 150,  250, true);
+
+        Bitmap card3 = BitmapFactory.decodeResource(view.getResources(), R.drawable.cardback3);
+        ImageButton cardb3 = view.findViewById(R.id.card_3);
+        card3 = Bitmap.createScaledBitmap(card3, 160,  260, true);
+
+        cardb1.setImageBitmap(card1);
+        cardb2.setImageBitmap(card2);
+        cardb3.setImageBitmap(card3);
+
+        ImageButton backgrb1 = view.findViewById(R.id.background_1);
+        Bitmap backgr1 = BitmapFactory.decodeResource(view.getResources(), R.drawable.background1);
+        backgr1 = Bitmap.createScaledBitmap(backgr1, 150,  250, true);
+
+        ImageButton backgrb2 = view.findViewById(R.id.background_2);
+        Bitmap backgr2 = BitmapFactory.decodeResource(view.getResources(), R.drawable.background2);
+        backgr2 = Bitmap.createScaledBitmap(backgr2, 150,  250, true);
+
+        ImageButton backgrb3 = view.findViewById(R.id.background_3);
+        Bitmap backgr3 = BitmapFactory.decodeResource(view.getResources(), R.drawable.background3);
+        backgr3 = Bitmap.createScaledBitmap(backgr3, 150,  250, true);
+
+        backgrb1.setImageBitmap(backgr1);
+        backgrb2.setImageBitmap(backgr2);
+        backgrb3.setImageBitmap(backgr3);
+        //DbHelper = new OpenDbHelper(view.getContext());
+        //SQLiteDatabase db = DbHelper.getReadableDatabase();
+        return view;
     }
 }

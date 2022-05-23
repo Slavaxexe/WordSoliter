@@ -7,11 +7,17 @@
     <string name="authors">Авторы</string>
     <string name="normal_mode">Обычный режим</string>
     <string name="cards">Карты</string>
-    <string name="price_card1">100</string>
+    <string name="price_card1">100$</string>
     <string name="background">Фон</string>
-    <string name="price_card2">200</string>
-    <string name="price_card3">300</string>
-    <string name="price_background1">100</string>
-    <string name="price_background2">200</string>
+    <string name="price_card2">200$</string>
+    <string name="price_card3">300$</string>
+    <string name="price_background1">100$</string>
+    <string name="price_background2">200$</string>
+    <string name="price_background3">300$</string>
     <string name="play">Играть</string>
+    <string name="word_solitaire">Буквъянс</string>
+    <string name="easy">легко</string>
+    <string name="normal">нормально</string>
+    <string name="hard">сложно</string>
+    <string name="insane">невозможно</string>
 </resources>
