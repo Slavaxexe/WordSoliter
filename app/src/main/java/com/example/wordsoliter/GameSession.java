@@ -3,6 +3,7 @@ package com.example.wordsoliter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -31,6 +32,7 @@ public class GameSession extends Thread {
     private String cardletter;
     private int cardc = -1;
     private int tier;
+    private SharedPreferences shPr;
     Bitmap cardfront, cardback, emptycard, background;
     private boolean cf = false;
     private SurfaceHolder surfaceHolder;
@@ -160,11 +162,34 @@ public class GameSession extends Thread {
             {
                 level = levelGenerator.generateLevel(tier);
                 deck = new CardDeck(level);
-                cardback = BitmapFactory.decodeResource(context.getResources(), R.drawable.cardback1);
-                cardfront = BitmapFactory.decodeResource(context.getResources(), R.drawable.cardfront1);
-                emptycard = BitmapFactory.decodeResource(context.getResources(), R.drawable.emptycard1);
-                background = BitmapFactory.decodeResource(context.getResources(), R.drawable.background1);
+                shPr = context.getSharedPreferences("com.example.wordsoliter", Context.MODE_PRIVATE);
+                switch (shPr.getInt("card", 1)){
+                    case 1:
+                        cardback = BitmapFactory.decodeResource(context.getResources(), R.drawable.cardback1);
+                        cardfront = BitmapFactory.decodeResource(context.getResources(), R.drawable.cardfront1);
+                        emptycard = BitmapFactory.decodeResource(context.getResources(), R.drawable.emptycard1);
+                        break;
+                    case 2:
+                        cardback = BitmapFactory.decodeResource(context.getResources(), R.drawable.cardback2);
+                        cardfront = BitmapFactory.decodeResource(context.getResources(), R.drawable.cardfront2);
+                        emptycard = BitmapFactory.decodeResource(context.getResources(), R.drawable.emptycard2);
+                        break;
+                    case 3:
+                        cardback = BitmapFactory.decodeResource(context.getResources(), R.drawable.cardback3);
+                        cardfront = BitmapFactory.decodeResource(context.getResources(), R.drawable.cardfront3);
+                        emptycard = BitmapFactory.decodeResource(context.getResources(), R.drawable.emptycard3);
+                }
                 Canvas canvas = surfaceHolder.lockCanvas();
+                switch (shPr.getInt("background", 1)){
+                    case 1:
+                        background = BitmapFactory.decodeResource(context.getResources(), R.drawable.background1);
+                        break;
+                    case 2:
+                        background = BitmapFactory.decodeResource(context.getResources(), R.drawable.background2);
+                        break;
+                    case 3:
+                        background = BitmapFactory.decodeResource(context.getResources(), R.drawable.background3);
+                }
                 double scale = (double) canvas.getWidth() / deck.level.size() / cardback.getWidth();
                 cardback = Bitmap.createScaledBitmap(cardback, (int) (cardback.getWidth() * scale), (int) (cardback.getHeight() * scale), true);
                 cardfront = Bitmap.createScaledBitmap(cardfront, (int) (cardfront.getWidth() * scale), (int) (cardfront.getHeight() * scale), true);

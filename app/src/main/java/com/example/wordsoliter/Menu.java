@@ -29,14 +29,9 @@ public class Menu extends AppCompatActivity {
         NavController navController = navHostFragment.getNavController();
         AppBarConfiguration barConfiguration = new AppBarConfiguration.Builder(a).build();
         NavigationUI.setupWithNavController(bnv, navController);
-        NavigationUI.setupActionBarWithNavController(this, navController, barConfiguration);
+        //NavigationUI.setupActionBarWithNavController(this, navController, barConfiguration);
+        getSupportActionBar().hide();
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(android.view.Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
-        return true;
-    }
 }

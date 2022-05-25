@@ -19,7 +19,7 @@ public class LevelGenerator {
     public Level generateLevel(int tier) {
         int l = 0;
         int r = 6979;
-        int countWords = 6;
+        int countWords = 5;
         int minLenWord = 4;
         int maxLenWord = 6;
         switch (tier) {

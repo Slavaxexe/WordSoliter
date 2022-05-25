@@ -1,6 +1,8 @@
 package com.example.wordsoliter;
 
-import android.database.sqlite.SQLiteDatabase;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -11,7 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +30,7 @@ public class Shop extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private  OpenDbHelper DbHelper;
+    public SharedPreferences shPr;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -66,6 +72,9 @@ public class Shop extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_shop,
                 container, false);
+        TextView money = view.findViewById(R.id.moneyView);
+        shPr = getActivity().getSharedPreferences("com.example.wordsoliter", Context.MODE_PRIVATE);
+        money.setText(Integer.toString(shPr.getInt("money", 1000)));
         Bitmap card1 = BitmapFactory.decodeResource(view.getResources(), R.drawable.cardback1);
         ImageButton cardb1 = view.findViewById(R.id.card_1);
         card1 = Bitmap.createScaledBitmap(card1, 150,  250, true);
@@ -81,6 +90,9 @@ public class Shop extends Fragment {
         cardb1.setImageBitmap(card1);
         cardb2.setImageBitmap(card2);
         cardb3.setImageBitmap(card3);
+        cardb1.setOnClickListener(this::shopListener);
+        cardb2.setOnClickListener(this::shopListener);
+        cardb3.setOnClickListener(this::shopListener);
 
         ImageButton backgrb1 = view.findViewById(R.id.background_1);
         Bitmap backgr1 = BitmapFactory.decodeResource(view.getResources(), R.drawable.background1);
@@ -97,8 +109,95 @@ public class Shop extends Fragment {
         backgrb1.setImageBitmap(backgr1);
         backgrb2.setImageBitmap(backgr2);
         backgrb3.setImageBitmap(backgr3);
+        backgrb1.setOnClickListener(this::shopListener);
+        backgrb2.setOnClickListener(this::shopListener);
+        backgrb3.setOnClickListener(this::shopListener);
         //DbHelper = new OpenDbHelper(view.getContext());
         //SQLiteDatabase db = DbHelper.getReadableDatabase();
         return view;
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    public void shopListener(View v){
+        boolean cardowned = false;
+        @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = shPr.edit();
+        switch (v.getId()) {
+            case R.id.card_1:
+                if (cardowned){
+                    editor.putInt("card", 1);
+                }
+                else{
+                    int price = Integer.parseInt(getResources().getString(R.string.price_card1));
+                    if (shPr.getInt("money", 1000) >= price){
+                        editor.putInt("money", shPr.getInt("money", 1000) - price);
+                        editor.putInt("card", 1);
+                    }
+                }
+                break;
+            case R.id.card_2:
+                if (cardowned){
+                    editor.putInt("card", 2);
+                }
+                else{
+                    int price = Integer.parseInt(getResources().getString(R.string.price_card2));
+                    Toast.makeText(getContext(), price + "", Toast.LENGTH_SHORT).show();
+                    if (shPr.getInt("money", 1000) >= price){
+                        editor.putInt("money", shPr.getInt("money", 1000) - price);
+                        editor.putInt("card", 2);
+                    }
+                }
+                break;
+            case R.id.card_3:
+                if (cardowned){
+                    editor.putInt("card", 3);
+                }
+                else{
+                    int price = Integer.parseInt(getResources().getString(R.string.price_card3));
+                    if (shPr.getInt("money", 1000) >= price){
+                        editor.putInt("money", shPr.getInt("money", 1000) - price);
+                        editor.putInt("card", 3);
+                    }
+                }
+                break;
+            case R.id.background_1:
+                if (cardowned){
+                    editor.putInt("background", 1);
+                }
+                else{
+                    int price = Integer.parseInt(getResources().getString(R.string.price_background1));
+                    if (shPr.getInt("money", 1000) >= price){
+                        editor.putInt("money", shPr.getInt("money", 1000) - price);
+                        editor.putInt("background", 1);
+                    }
+                }
+                break;
+            case R.id.background_2:
+                if (cardowned){
+                    editor.putInt("background", 2);
+                }
+                else{
+                    int price = Integer.parseInt(getResources().getString(R.string.price_background2));
+                    if (shPr.getInt("money", 1000) >= price){
+                        editor.putInt("money", shPr.getInt("money", 1000) - price);
+                        editor.putInt("background", 2);
+                    }
+                }
+                break;
+            case R.id.background_3:
+                if (cardowned){
+                    editor.putInt("background", 3);
+                }
+                else{
+                    int price = Integer.parseInt(getResources().getString(R.string.price_background1));
+                    if (shPr.getInt("money", 1000) >= price){
+                        editor.putInt("money", shPr.getInt("money", 1000) - price);
+                        editor.putInt("background", 3);
+                    }
+                }
+                break;
+        }
+        editor.apply();
+        TextView money = Objects.requireNonNull(getActivity()).findViewById(R.id.moneyView);
+        money.setText(shPr.getInt("money", 1000) + "");
     }
 }

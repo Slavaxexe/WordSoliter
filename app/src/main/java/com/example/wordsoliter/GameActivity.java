@@ -1,5 +1,6 @@
 package com.example.wordsoliter;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,8 +16,9 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setTitle(R.string.word_solitaire);
-        drawView = new DrawView(this, getIntent().getIntExtra("mode", 0));
+        drawView = new DrawView(this, getIntent().getIntExtra("mode", 1));
         setContentView(drawView);
+        SharedPreferences s = getPreferences(MODE_PRIVATE);
     }
 
     @Override

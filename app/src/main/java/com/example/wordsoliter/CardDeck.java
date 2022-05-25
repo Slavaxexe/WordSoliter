@@ -41,7 +41,7 @@ public class CardDeck {
 
     public void drawDeck(Canvas canvas, ArrayList<Integer> user_ind, int cardc){
         float x = 0;
-        h = cardback.getHeight() / 10;
+        h = cardback.getHeight() / 6;
         int textsize = 150;
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setTextSize(100);
