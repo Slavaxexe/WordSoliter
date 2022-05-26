@@ -163,7 +163,7 @@ public class GameSession extends Thread {
                 level = levelGenerator.generateLevel(tier);
                 deck = new CardDeck(level);
                 shPr = context.getSharedPreferences("com.example.wordsoliter", Context.MODE_PRIVATE);
-                switch (shPr.getInt("card", 1)){
+                switch (shPr.getInt("cardchosen", 1)){
                     case 1:
                         cardback = BitmapFactory.decodeResource(context.getResources(), R.drawable.cardback1);
                         cardfront = BitmapFactory.decodeResource(context.getResources(), R.drawable.cardfront1);
@@ -180,7 +180,7 @@ public class GameSession extends Thread {
                         emptycard = BitmapFactory.decodeResource(context.getResources(), R.drawable.emptycard3);
                 }
                 Canvas canvas = surfaceHolder.lockCanvas();
-                switch (shPr.getInt("background", 1)){
+                switch (shPr.getInt("backgroundchosen", 1)){
                     case 1:
                         background = BitmapFactory.decodeResource(context.getResources(), R.drawable.background1);
                         break;

@@ -31,7 +31,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/card1price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -53,14 +53,14 @@
         app:layout_constraintTop_toTopOf="@+id/card_2" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/card3price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/price_card3"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="@+id/card_3"
         app:layout_constraintStart_toStartOf="@+id/card_3"
-        app:layout_constraintTop_toTopOf="@+id/textView8" />
+        app:layout_constraintTop_toTopOf="@+id/card2price" />
 
     <ImageButton
         android:id="@+id/card_2"
@@ -74,14 +74,14 @@
         app:layout_constraintTop_toTopOf="@+id/card_1" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/card2price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/price_card2"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="@+id/card_2"
         app:layout_constraintStart_toStartOf="@+id/card_2"
-        app:layout_constraintTop_toTopOf="@+id/textView2" />
+        app:layout_constraintTop_toTopOf="@+id/card1price" />
 
     <TextView
         android:id="@+id/textView4"
@@ -94,10 +94,10 @@
         app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintHorizontal_bias="0.483"
         app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/card3price" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/background1price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -107,14 +107,14 @@
         app:layout_constraintTop_toBottomOf="@+id/background_1" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/background2price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/price_background2"
-        app:layout_constraintBottom_toBottomOf="@+id/textView5"
+        app:layout_constraintBottom_toBottomOf="@+id/background1price"
         app:layout_constraintEnd_toEndOf="@+id/background_2"
         app:layout_constraintStart_toStartOf="@+id/background_2"
-        app:layout_constraintTop_toTopOf="@+id/textView5"
+        app:layout_constraintTop_toTopOf="@+id/background1price"
         app:layout_constraintVertical_bias="1.0" />
 
     <ImageButton
@@ -149,13 +149,14 @@
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <TextView
+        android:id="@+id/background3price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/price_background1"
-        app:layout_constraintBottom_toBottomOf="@+id/textView6"
+        app:layout_constraintBottom_toBottomOf="@+id/background2price"
         app:layout_constraintEnd_toEndOf="@+id/background_3"
         app:layout_constraintStart_toStartOf="@+id/background_3"
-        app:layout_constraintTop_toTopOf="@+id/textView6" />
+        app:layout_constraintTop_toTopOf="@+id/background2price" />
 
     <ImageView
         android:id="@+id/imageView"

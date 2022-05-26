@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -16,7 +17,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,9 +75,7 @@ public class Shop extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_shop,
                 container, false);
-        TextView money = view.findViewById(R.id.moneyView);
         shPr = getActivity().getSharedPreferences("com.example.wordsoliter", Context.MODE_PRIVATE);
-        money.setText(Integer.toString(shPr.getInt("money", 1000)));
         Bitmap card1 = BitmapFactory.decodeResource(view.getResources(), R.drawable.cardback1);
         ImageButton cardb1 = view.findViewById(R.id.card_1);
         card1 = Bitmap.createScaledBitmap(card1, 150,  250, true);
@@ -112,92 +113,164 @@ public class Shop extends Fragment {
         backgrb1.setOnClickListener(this::shopListener);
         backgrb2.setOnClickListener(this::shopListener);
         backgrb3.setOnClickListener(this::shopListener);
-        //DbHelper = new OpenDbHelper(view.getContext());
-        //SQLiteDatabase db = DbHelper.getReadableDatabase();
+        update(view);
         return view;
     }
 
-    @SuppressLint("NonConstantResourceId")
+    @SuppressLint({"NonConstantResourceId", "MutatingSharedPrefs"})
     public void shopListener(View v){
         boolean cardowned = false;
         @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = shPr.edit();
+        Set<String> skinsOwned = new HashSet<>();
+        skinsOwned.add("card_1");
+        skinsOwned.add("background_1");
+        skinsOwned = shPr.getStringSet("skins_owned", skinsOwned);
         switch (v.getId()) {
             case R.id.card_1:
-                if (cardowned){
-                    editor.putInt("card", 1);
+                if (skinsOwned.contains("card_1")){
+                    editor.putInt("cardchosen", 1);
                 }
                 else{
                     int price = Integer.parseInt(getResources().getString(R.string.price_card1));
                     if (shPr.getInt("money", 1000) >= price){
                         editor.putInt("money", shPr.getInt("money", 1000) - price);
-                        editor.putInt("card", 1);
+                        editor.putInt("cardchosen", 1);
+                        skinsOwned.add("card_1");
+                        editor.putStringSet("skins_owned", skinsOwned);
                     }
                 }
                 break;
             case R.id.card_2:
-                if (cardowned){
-                    editor.putInt("card", 2);
+                if (skinsOwned.contains("card_2")){
+                    editor.putInt("cardchosen", 2);
                 }
                 else{
                     int price = Integer.parseInt(getResources().getString(R.string.price_card2));
-                    Toast.makeText(getContext(), price + "", Toast.LENGTH_SHORT).show();
                     if (shPr.getInt("money", 1000) >= price){
                         editor.putInt("money", shPr.getInt("money", 1000) - price);
-                        editor.putInt("card", 2);
+                        editor.putInt("cardchosen", 2);
+                        skinsOwned.add("card_2");
+                        editor.putStringSet("skins_owned", skinsOwned);
                     }
                 }
                 break;
             case R.id.card_3:
-                if (cardowned){
-                    editor.putInt("card", 3);
+                if (skinsOwned.contains("card_3")){
+                    editor.putInt("cardchosen", 3);
+
                 }
                 else{
                     int price = Integer.parseInt(getResources().getString(R.string.price_card3));
                     if (shPr.getInt("money", 1000) >= price){
                         editor.putInt("money", shPr.getInt("money", 1000) - price);
-                        editor.putInt("card", 3);
+                        editor.putInt("cardchosen", 3);
+                        skinsOwned.add("card_3");
+                        editor.putStringSet("skins_owned", skinsOwned);
                     }
                 }
                 break;
             case R.id.background_1:
-                if (cardowned){
-                    editor.putInt("background", 1);
+                if (skinsOwned.contains("background_1")){
+                    editor.putInt("backgroundchosen", 1);
                 }
                 else{
                     int price = Integer.parseInt(getResources().getString(R.string.price_background1));
                     if (shPr.getInt("money", 1000) >= price){
                         editor.putInt("money", shPr.getInt("money", 1000) - price);
-                        editor.putInt("background", 1);
+                        editor.putInt("backgroundchosen", 1);
+                        skinsOwned.add("background_1");
+                        editor.putStringSet("skins_owned", skinsOwned);
                     }
                 }
                 break;
             case R.id.background_2:
-                if (cardowned){
-                    editor.putInt("background", 2);
+                if (skinsOwned.contains("background_2")){
+                    editor.putInt("backgroundchosen", 2);
                 }
                 else{
                     int price = Integer.parseInt(getResources().getString(R.string.price_background2));
                     if (shPr.getInt("money", 1000) >= price){
                         editor.putInt("money", shPr.getInt("money", 1000) - price);
-                        editor.putInt("background", 2);
+                        editor.putInt("backgroundchosen", 2);
+                        skinsOwned.add("background_2");
+                        editor.putStringSet("skins_owned", skinsOwned);
                     }
                 }
                 break;
             case R.id.background_3:
-                if (cardowned){
-                    editor.putInt("background", 3);
+                if (skinsOwned.contains("background_3")){
+                    editor.putInt("backgroundchosen", 3);
                 }
                 else{
                     int price = Integer.parseInt(getResources().getString(R.string.price_background1));
                     if (shPr.getInt("money", 1000) >= price){
                         editor.putInt("money", shPr.getInt("money", 1000) - price);
-                        editor.putInt("background", 3);
+                        editor.putInt("backgroundchosen", 3);
+                        skinsOwned.add("background_3");
+                        editor.putStringSet("skins_owned", skinsOwned);
                     }
                 }
                 break;
         }
         editor.apply();
-        TextView money = Objects.requireNonNull(getActivity()).findViewById(R.id.moneyView);
+        update(getView());
+    }
+
+    public void update(View v){
+        TextView card1price = v.findViewById(R.id.card1price),
+                card2price = v.findViewById(R.id.card2price),
+                card3price = v.findViewById(R.id.card3price),
+                background1price = v.findViewById(R.id.background1price),
+                background2price = v.findViewById(R.id.background2price),
+                background3price = v.findViewById(R.id.background3price);
+        Set<String> skinsOwned = new HashSet<>();
+        skinsOwned.add("card_1");
+        skinsOwned.add("background_1");
+        skinsOwned = shPr.getStringSet("skins_owned", skinsOwned);
+        for(String skin: skinsOwned)
+            switch (skin){
+                case "card_1":
+                    card1price.setText("Имеется");
+                    break;
+                case "card_2":
+                    card2price.setText("Имеется");
+                    break;
+                case "card_3":
+                    card3price.setText("Имеется");
+                    break;
+                case "background_1":
+                    background1price.setText("Имеется");
+                    break;
+                case "background_2":
+                    background2price.setText("Имеется");
+                    break;
+                case "background_3":
+                    background3price.setText("Имеется");
+                    break;
+            }
+        switch (shPr.getInt("cardchosen", 1)){
+            case 1:
+                card1price.setText("Выбрано");
+                break;
+            case 2:
+                card2price.setText("Выбрано");
+                break;
+            case 3:
+                card3price.setText("Выбрано");
+                break;
+        }
+        switch (shPr.getInt("backgroundchosen", 1)){
+            case 1:
+                background1price.setText("Выбрано");
+                break;
+            case 2:
+                background2price.setText("Выбрано");
+                break;
+            case 3:
+                background3price.setText("Выбрано");
+                break;
+        }
+        TextView money = v.findViewById(R.id.moneyView);
         money.setText(shPr.getInt("money", 1000) + "");
     }
 }
