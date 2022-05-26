@@ -21,53 +21,17 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Shop#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class Shop extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    private  OpenDbHelper DbHelper;
     public SharedPreferences shPr;
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public Shop() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Shop.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Shop newInstance(String param1, String param2) {
-        Shop fragment = new Shop();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -75,7 +39,7 @@ public class Shop extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_shop,
                 container, false);
-        shPr = getActivity().getSharedPreferences("com.example.wordsoliter", Context.MODE_PRIVATE);
+        shPr = Objects.requireNonNull(getActivity()).getSharedPreferences("com.example.wordsoliter", Context.MODE_PRIVATE);
         Bitmap card1 = BitmapFactory.decodeResource(view.getResources(), R.drawable.cardback1);
         ImageButton cardb1 = view.findViewById(R.id.card_1);
         card1 = Bitmap.createScaledBitmap(card1, 150,  250, true);
@@ -132,11 +96,14 @@ public class Shop extends Fragment {
                 }
                 else{
                     int price = Integer.parseInt(getResources().getString(R.string.price_card1));
-                    if (shPr.getInt("money", 1000) >= price){
-                        editor.putInt("money", shPr.getInt("money", 1000) - price);
+                    if (shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) >= price){
+                        editor.putInt("money", shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) - price);
                         editor.putInt("cardchosen", 1);
                         skinsOwned.add("card_1");
                         editor.putStringSet("skins_owned", skinsOwned);
+                    }
+                    else{
+                        Toast.makeText(v.getContext(), "Недостаточно денег", Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;
@@ -146,11 +113,14 @@ public class Shop extends Fragment {
                 }
                 else{
                     int price = Integer.parseInt(getResources().getString(R.string.price_card2));
-                    if (shPr.getInt("money", 1000) >= price){
-                        editor.putInt("money", shPr.getInt("money", 1000) - price);
+                    if (shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) >= price){
+                        editor.putInt("money", shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) - price);
                         editor.putInt("cardchosen", 2);
                         skinsOwned.add("card_2");
                         editor.putStringSet("skins_owned", skinsOwned);
+                    }
+                    else{
+                        Toast.makeText(v.getContext(), "Недостаточно денег", Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;
@@ -161,11 +131,14 @@ public class Shop extends Fragment {
                 }
                 else{
                     int price = Integer.parseInt(getResources().getString(R.string.price_card3));
-                    if (shPr.getInt("money", 1000) >= price){
-                        editor.putInt("money", shPr.getInt("money", 1000) - price);
+                    if (shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) >= price){
+                        editor.putInt("money", shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) - price);
                         editor.putInt("cardchosen", 3);
                         skinsOwned.add("card_3");
                         editor.putStringSet("skins_owned", skinsOwned);
+                    }
+                    else{
+                        Toast.makeText(v.getContext(), "Недостаточно денег", Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;
@@ -175,11 +148,14 @@ public class Shop extends Fragment {
                 }
                 else{
                     int price = Integer.parseInt(getResources().getString(R.string.price_background1));
-                    if (shPr.getInt("money", 1000) >= price){
-                        editor.putInt("money", shPr.getInt("money", 1000) - price);
+                    if (shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) >= price){
+                        editor.putInt("money", shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) - price);
                         editor.putInt("backgroundchosen", 1);
                         skinsOwned.add("background_1");
                         editor.putStringSet("skins_owned", skinsOwned);
+                    }
+                    else{
+                        Toast.makeText(v.getContext(), "Недостаточно денег", Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;
@@ -188,12 +164,15 @@ public class Shop extends Fragment {
                     editor.putInt("backgroundchosen", 2);
                 }
                 else{
-                    int price = Integer.parseInt(getResources().getString(R.string.price_background2));
-                    if (shPr.getInt("money", 1000) >= price){
-                        editor.putInt("money", shPr.getInt("money", 1000) - price);
+                    int price = Integer.parseInt(getResources().getString(R.string.price_background3));
+                    if (shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) >= price){
+                        editor.putInt("money", shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) - price);
                         editor.putInt("backgroundchosen", 2);
                         skinsOwned.add("background_2");
                         editor.putStringSet("skins_owned", skinsOwned);
+                    }
+                    else{
+                        Toast.makeText(v.getContext(), "Недостаточно денег", Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;
@@ -204,18 +183,22 @@ public class Shop extends Fragment {
                 else{
                     int price = Integer.parseInt(getResources().getString(R.string.price_background1));
                     if (shPr.getInt("money", 1000) >= price){
-                        editor.putInt("money", shPr.getInt("money", 1000) - price);
+                        editor.putInt("money", shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) - price);
                         editor.putInt("backgroundchosen", 3);
                         skinsOwned.add("background_3");
                         editor.putStringSet("skins_owned", skinsOwned);
+                    }
+                    else{
+                        Toast.makeText(v.getContext(), "Недостаточно денег", Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;
         }
         editor.apply();
-        update(getView());
+        update(Objects.requireNonNull(getView()));
     }
 
+    @SuppressLint("SetTextI18n")
     public void update(View v){
         TextView card1price = v.findViewById(R.id.card1price),
                 card2price = v.findViewById(R.id.card2price),
@@ -271,6 +254,6 @@ public class Shop extends Fragment {
                 break;
         }
         TextView money = v.findViewById(R.id.moneyView);
-        money.setText(shPr.getInt("money", 1000) + "");
+        money.setText(shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) + "");
     }
 }

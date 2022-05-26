@@ -17,31 +17,31 @@ public class LevelGenerator {
     }
 
     public Level generateLevel(int tier) {
-        int l = 0;
-        int r = 6979;
-        int countWords = 5;
-        int minLenWord = 4;
-        int maxLenWord = 6;
+        int l = 0, r = 1000;
+        int countWords = 10;
+        int minLenWord = 3;
+        int maxLenWord = 8;
+        int[] dictboards = {0, 2000, 10377, 14421, 93421};
         switch (tier) {
             case (1):
-                l = 0;
-                r = 2000;
+                l = dictboards[0];
+                r = dictboards[1];
                 break;
             case (2):
-                l = 0;
-                r = 10377;
+                l = dictboards[1];
+                r = dictboards[2];
                 break;
             case (3):
-                l = 0;
-                r = 14421;
+                l = dictboards[2];
+                r = dictboards[3];
                 break;
             case (4):
-                l = 0;
-                r = 93421;
+                l = dictboards[3];
+                r = dictboards[4];
                 break;
         }
         ArrayList<String> dictForLevel = new ArrayList<>(dictWords.subList(l, r));
-        dictForLevel = dictForLevel.stream().filter(x -> x.length() <= maxLenWord && x.length() >= minLenWord).collect(Collectors.toCollection(ArrayList::new));
+        dictForLevel = dictForLevel.stream().filter(x -> x.length() <= maxLenWord && x.length() >= minLenWord && x.length() != 7).collect(Collectors.toCollection(ArrayList::new));
         Collections.shuffle(dictForLevel);
         ArrayList<String> words = new ArrayList<>();
         for (int i = 0; i < countWords; i++) {
@@ -61,19 +61,17 @@ public class LevelGenerator {
 
         Level(ArrayList<String> words) {
             int CountColumn = words.get(0).length();
-            int index = 0;
 
             for (int i = 0; i < words.size(); i++) {
                 if (words.get(i).length() > CountColumn) {
                     CountColumn = words.get(i).length();
-                    index = i;
                 }
             }
             level = new ArrayList<>();
             answers_ind = new ArrayList<>();
             answers_words = new ArrayList<>();
             for (int i = 0; i < CountColumn; i++)
-                level.add(new ArrayList<String>());
+                level.add(new ArrayList<>());
             for (String word : words) {
                 ArrayList<Integer> ans_ind = new ArrayList<>();
                 ArrayList<Integer> possibleColumn = new ArrayList<>();

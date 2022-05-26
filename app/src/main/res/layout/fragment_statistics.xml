@@ -5,10 +5,12 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/stat"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="empty"
         android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

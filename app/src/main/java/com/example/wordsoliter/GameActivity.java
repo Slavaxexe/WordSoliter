@@ -1,7 +1,9 @@
 package com.example.wordsoliter;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -9,13 +11,16 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+
+import java.util.Objects;
 
 public class GameActivity extends AppCompatActivity {
     DrawView drawView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setTitle(R.string.word_solitaire);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.word_solitaire);
         drawView = new DrawView(this, getIntent().getIntExtra("mode", 1));
         setContentView(drawView);
         SharedPreferences s = getPreferences(MODE_PRIVATE);
@@ -30,15 +35,29 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.lightbulb:
-                gethint();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.lightbulb) {
+            gethint();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
     public void gethint(){
+        FragmentManager manager = getSupportFragmentManager();
+        HintDialogFragment hintDialogFragment = new HintDialogFragment();
+        hintDialogFragment.show(manager, "myDialog");
+    }
+
+    public void useHint(){
         drawView.getHint();
+    }
+
+    public void cancel(){
+        //nothing to do
+    }
+
+    @Override
+    public void onBackPressed() {
+        drawView.gameSession.returnToMenu();
+
     }
 }

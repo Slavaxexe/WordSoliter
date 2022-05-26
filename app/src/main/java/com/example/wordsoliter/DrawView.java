@@ -7,7 +7,7 @@ import android.view.SurfaceView;
 
 public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
-    private GameSession gameSession;
+    GameSession gameSession;
     public int tier;
 
     public DrawView(Context context, int i) {
