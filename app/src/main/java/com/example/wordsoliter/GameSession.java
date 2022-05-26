@@ -4,7 +4,6 @@ package com.example.wordsoliter;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -16,10 +15,8 @@ import android.graphics.Paint;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import androidx.fragment.app.FragmentManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,26 +25,24 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class GameSession extends Thread {
     private LevelGenerator.Level level;
-    private float[] cardcoords = new float[2];
+    private final float[] cardcoords = new float[2];
     private String cardletter;
     private int cardc = -1;
-    private int tier;
+    private final int tier;
     private OpenDbHelper dbHelper;
     private SharedPreferences shPr;
     Bitmap cardfront, cardback, emptycard, background;
     private boolean cf = false;
-    private SurfaceHolder surfaceHolder;
+    private final SurfaceHolder surfaceHolder;
     private volatile boolean running = true;
-    private Paint backgroundPaint = new Paint();
+    private final Paint backgroundPaint = new Paint();
     private volatile boolean isGameStarted = false, isGameFinished = false;
     private String[] user_answer;
-    private ArrayList<Integer> user_ind;
-    private Context context;
+    private final ArrayList<Integer> user_ind;
+    private final Context context;
     private CardDeck deck;
 
     {
@@ -101,22 +96,10 @@ public class GameSession extends Thread {
                     break;
             }
             checkAnswers();
-            if (!isGameFinished) {
-                user_answer = new String[level.answers_words.get(level.answers_words.size() - 1).length()];
-                Arrays.fill(user_answer, "!");
-                user_ind.clear();
-            }
         }
     }
-
-    public void returnToMenu() {
-        isGameFinished = true;
-        Activity activity = (Activity) context;
-        activity.finish();
-    }
-
-    public void checkAnswers() {
-        if (!Arrays.asList(user_answer).contains("!")) {
+    public void checkAnswers(){
+        if (Arrays.stream(user_answer).noneMatch("!"::equals)) {
             boolean f = true;
             for (int i = 0; i < user_answer.length; i++) {
                 if (user_answer[i].charAt(0) != level.answers_words.get(level.answers_words.size() - 1).charAt(i)) {
@@ -143,7 +126,7 @@ public class GameSession extends Thread {
                             " WHERE " + OpenDbHelper._ID + " = 1";
                     cursor = dbHelper.getReadableDatabase().rawQuery(query, null);
                     cursor.moveToFirst();
-                    values.put(OpenDbHelper.COLUMN_WORDSMADE, cursor.getInt(cursor.getColumnIndexOrThrow(OpenDbHelper.COLUMN_WORDSMADE)) + 1);
+                    values.put(OpenDbHelper.COLUMN_WORDSMADE,  cursor.getInt(cursor.getColumnIndexOrThrow(OpenDbHelper.COLUMN_WORDSMADE)) + 1);
                     dbHelper.getWritableDatabase().update(OpenDbHelper.TABLE_NAME,
                             values,
                             null, null);
@@ -157,7 +140,7 @@ public class GameSession extends Thread {
 
                         isGameFinished = true;
                         values = new ContentValues();
-                        switch (tier) {
+                        switch (tier){
                             case 1:
                                 query = "SELECT " + OpenDbHelper.COLUMN_GAMESEWON +
                                         " FROM " + OpenDbHelper.TABLE_NAME +
@@ -216,12 +199,22 @@ public class GameSession extends Thread {
                     }
                 }
             }
+            if (!isGameFinished) {
+                user_answer = new String[level.answers_words.get(level.answers_words.size() - 1).length()];
+                Arrays.fill(user_answer, "!");
+                user_ind.clear();
+            }
         }
     }
 
+    public void returnToMenu(){
+        isGameFinished = true;
+        Activity activity = (Activity) context;
+        activity.finish();
+    }
     public void getHint() {
         Resources res = context.getResources();
-        if (shPr.getInt("money", res.getInteger(R.integer.moneydefualt)) >= res.getInteger(R.integer.moneyforhint)) {
+        if(shPr.getInt("money", res.getInteger(R.integer.moneydefualt)) >= res.getInteger(R.integer.moneyforhint)) {
             Toast.makeText(context, level.answers_words.get(level.answers_words.size() - 1), Toast.LENGTH_LONG).show();
             String query;
             Cursor cursor;
@@ -239,7 +232,8 @@ public class GameSession extends Thread {
             SharedPreferences.Editor editor = shPr.edit();
             editor.putInt("money", shPr.getInt("money", res.getInteger(R.integer.moneydefualt)) - res.getInteger(R.integer.moneyforhint));
             editor.apply();
-        } else {
+        }
+        else {
             Toast.makeText(context, "Не хватает монет", Toast.LENGTH_SHORT).show();
         }
     }
@@ -272,7 +266,7 @@ public class GameSession extends Thread {
         }
     }
 
-    public void onCreate() {
+    public void onCreate(){
         dbHelper = new OpenDbHelper(context);
         LevelGenerator levelGenerator = null;
         try {
@@ -280,10 +274,8 @@ public class GameSession extends Thread {
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
             ArrayList<String> dict = new ArrayList<>();
             String line;
-            int i = 0;
             while ((line = reader.readLine()) != null) {
                 dict.add(line);
-                i++;
             }
             levelGenerator = new LevelGenerator(dict);
         } catch (IOException e) {

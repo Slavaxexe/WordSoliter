@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -83,7 +82,6 @@ public class Shop extends Fragment {
 
     @SuppressLint({"NonConstantResourceId", "MutatingSharedPrefs"})
     public void shopListener(View v) {
-        boolean cardowned = false;
         @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = shPr.edit();
         Set<String> skinsOwned = new HashSet<>();
         skinsOwned.add("card_1");

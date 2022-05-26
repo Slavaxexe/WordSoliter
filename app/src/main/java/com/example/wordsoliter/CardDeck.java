@@ -54,7 +54,6 @@ public class CardDeck {
     public void drawDeck(Canvas canvas, ArrayList<Integer> user_ind, int cardc) {
         float x = 0;
         h = cardHeight / 6;
-        int textsize = 150;
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setTextSize(100);
         for (int i = 0; i < level.size(); i++) {
@@ -83,10 +82,7 @@ public class CardDeck {
         }
     }
 
-    public int[] getCoordsEmptyCard(int i) {
 
-        return new int[]{cardWidth * i, (int) (height * scale)};
-    }
 
     public ArrayList<Integer> onTouch(float x, float y) {
         int column = (int) (x / width * level.size());
@@ -102,7 +98,7 @@ public class CardDeck {
     }
 
     public int onUp(float x, float y) {
-        if (y > height * scale && y < height * scale + cardHeight) {
+        if (y > (float) height * scale && y < (float) height * scale + cardHeight) {
             if (x > 0 && x < cardWidth * level.answers_words.get(level.answers_words.size() - 1).length()) {
                 return (int) (x / cardWidth);
             }

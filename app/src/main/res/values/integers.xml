@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="moneydefualt">500</integer>
+    <integer name="moneydefualt">700</integer>
     <integer name="moneyforword">20</integer>
     <integer name="moneyforgame">200</integer>
     <integer name="moneyforhint">50</integer>

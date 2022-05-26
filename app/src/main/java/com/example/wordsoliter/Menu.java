@@ -4,21 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.MenuInflater;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 public class Menu extends AppCompatActivity {
     @Override
@@ -27,10 +21,6 @@ public class Menu extends AppCompatActivity {
         setContentView(R.layout.menu);
         FragmentManager fragmentManager = getSupportFragmentManager();
         BottomNavigationView bnv = findViewById(R.id.bottomNavigationView);
-        Set<Integer> a = new HashSet<>();
-        a.add(R.id.start);
-        a.add(R.id.shop);
-        a.add(R.id.statistics);
         NavHostFragment navHostFragment =
                 (NavHostFragment) fragmentManager.findFragmentById(R.id.fragmentContainerView);
         assert navHostFragment != null;
@@ -66,7 +56,7 @@ public class Menu extends AppCompatActivity {
             values.put(OpenDbHelper.COLUMN_GAMESIWON, 0);
             values.put(OpenDbHelper.COLUMN_WORDSMADE, 0);
             values.put(OpenDbHelper.COLUMN_HINTSUSED, 0);
-            long newRowId = db.insert(OpenDbHelper.TABLE_NAME, null, values);
+            db.insert(OpenDbHelper.TABLE_NAME, null, values);
         }
         cursor.close();
     }

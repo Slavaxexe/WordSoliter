@@ -5,21 +5,18 @@ import java.util.Collections;
 import java.util.stream.Collectors;
 
 public class LevelGenerator {
-    private final ArrayList<ArrayList<String>> level = new ArrayList<>();
     private final ArrayList<String> dictWords = new ArrayList<>();
-    private final ArrayList<Float> dictRate = new ArrayList<>();
 
     public LevelGenerator(ArrayList<String> dictionary) {
         for (String line : dictionary) {
             dictWords.add(line.split(" ")[0]);
-            dictRate.add(Float.valueOf(line.split(" ")[1]));
         }
     }
 
     public Level generateLevel(int tier) {
-        int l = 0, r = 1000;
+        int l = 0, r = 2000;
         int countWords = 10;
-        int minLenWord = 3;
+        int minLenWord = 4;
         int maxLenWord = 8;
         int[] dictboards = {0, 2000, 10377, 14421, 93421};
         switch (tier) {
@@ -50,11 +47,8 @@ public class LevelGenerator {
         return new Level(words);
     }
 
-    public String get(int ind) {
-        return dictWords.get(ind);
-    }
 
-    class Level {
+    static class Level {
         ArrayList<ArrayList<Integer>> answers_ind;
         ArrayList<ArrayList<String>> level;
         ArrayList<String> answers_words;

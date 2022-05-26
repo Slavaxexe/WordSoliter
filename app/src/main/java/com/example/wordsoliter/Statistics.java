@@ -2,7 +2,6 @@ package com.example.wordsoliter;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Path;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,8 +12,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class Statistics extends Fragment {
-
-    private OpenDbHelper dbHelper;
 
 
     public Statistics() {
@@ -33,7 +30,7 @@ public class Statistics extends Fragment {
         View view = inflater.inflate(R.layout.fragment_statistics,
                 container, false);
         TextView stat = view.findViewById(R.id.stat);
-        dbHelper = new OpenDbHelper(getContext());
+        OpenDbHelper dbHelper = new OpenDbHelper(getContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String[] projection = {
                 OpenDbHelper._ID,
