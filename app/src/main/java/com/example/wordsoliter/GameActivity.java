@@ -17,6 +17,7 @@ import java.util.Objects;
 
 public class GameActivity extends AppCompatActivity {
     DrawView drawView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,17 +42,18 @@ public class GameActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    public void gethint(){
+
+    public void gethint() {
         FragmentManager manager = getSupportFragmentManager();
         HintDialogFragment hintDialogFragment = new HintDialogFragment();
         hintDialogFragment.show(manager, "myDialog");
     }
 
-    public void useHint(){
+    public void useHint() {
         drawView.getHint();
     }
 
-    public void cancel(){
+    public void cancel() {
         //nothing to do
     }
 

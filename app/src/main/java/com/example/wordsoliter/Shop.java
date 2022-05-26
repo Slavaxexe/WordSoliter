@@ -42,15 +42,15 @@ public class Shop extends Fragment {
         shPr = Objects.requireNonNull(getActivity()).getSharedPreferences("com.example.wordsoliter", Context.MODE_PRIVATE);
         Bitmap card1 = BitmapFactory.decodeResource(view.getResources(), R.drawable.cardback1);
         ImageButton cardb1 = view.findViewById(R.id.card_1);
-        card1 = Bitmap.createScaledBitmap(card1, 150,  250, true);
+        card1 = Bitmap.createScaledBitmap(card1, 150, 250, true);
 
         Bitmap card2 = BitmapFactory.decodeResource(view.getResources(), R.drawable.cardback2);
         ImageButton cardb2 = view.findViewById(R.id.card_2);
-        card2 = Bitmap.createScaledBitmap(card2, 150,  250, true);
+        card2 = Bitmap.createScaledBitmap(card2, 150, 250, true);
 
         Bitmap card3 = BitmapFactory.decodeResource(view.getResources(), R.drawable.cardback3);
         ImageButton cardb3 = view.findViewById(R.id.card_3);
-        card3 = Bitmap.createScaledBitmap(card3, 160,  260, true);
+        card3 = Bitmap.createScaledBitmap(card3, 160, 260, true);
 
         cardb1.setImageBitmap(card1);
         cardb2.setImageBitmap(card2);
@@ -61,15 +61,15 @@ public class Shop extends Fragment {
 
         ImageButton backgrb1 = view.findViewById(R.id.background_1);
         Bitmap backgr1 = BitmapFactory.decodeResource(view.getResources(), R.drawable.background1);
-        backgr1 = Bitmap.createScaledBitmap(backgr1, 150,  250, true);
+        backgr1 = Bitmap.createScaledBitmap(backgr1, 150, 250, true);
 
         ImageButton backgrb2 = view.findViewById(R.id.background_2);
         Bitmap backgr2 = BitmapFactory.decodeResource(view.getResources(), R.drawable.background2);
-        backgr2 = Bitmap.createScaledBitmap(backgr2, 150,  250, true);
+        backgr2 = Bitmap.createScaledBitmap(backgr2, 150, 250, true);
 
         ImageButton backgrb3 = view.findViewById(R.id.background_3);
         Bitmap backgr3 = BitmapFactory.decodeResource(view.getResources(), R.drawable.background3);
-        backgr3 = Bitmap.createScaledBitmap(backgr3, 150,  250, true);
+        backgr3 = Bitmap.createScaledBitmap(backgr3, 150, 250, true);
 
         backgrb1.setImageBitmap(backgr1);
         backgrb2.setImageBitmap(backgr2);
@@ -82,7 +82,7 @@ public class Shop extends Fragment {
     }
 
     @SuppressLint({"NonConstantResourceId", "MutatingSharedPrefs"})
-    public void shopListener(View v){
+    public void shopListener(View v) {
         boolean cardowned = false;
         @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = shPr.edit();
         Set<String> skinsOwned = new HashSet<>();
@@ -91,104 +91,92 @@ public class Shop extends Fragment {
         skinsOwned = shPr.getStringSet("skins_owned", skinsOwned);
         switch (v.getId()) {
             case R.id.card_1:
-                if (skinsOwned.contains("card_1")){
+                if (skinsOwned.contains("card_1")) {
                     editor.putInt("cardchosen", 1);
-                }
-                else{
+                } else {
                     int price = Integer.parseInt(getResources().getString(R.string.price_card1));
-                    if (shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) >= price){
+                    if (shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) >= price) {
                         editor.putInt("money", shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) - price);
                         editor.putInt("cardchosen", 1);
                         skinsOwned.add("card_1");
                         editor.putStringSet("skins_owned", skinsOwned);
-                    }
-                    else{
+                    } else {
                         Toast.makeText(v.getContext(), "Недостаточно денег", Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;
             case R.id.card_2:
-                if (skinsOwned.contains("card_2")){
+                if (skinsOwned.contains("card_2")) {
                     editor.putInt("cardchosen", 2);
-                }
-                else{
+                } else {
                     int price = Integer.parseInt(getResources().getString(R.string.price_card2));
-                    if (shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) >= price){
+                    if (shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) >= price) {
                         editor.putInt("money", shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) - price);
                         editor.putInt("cardchosen", 2);
                         skinsOwned.add("card_2");
                         editor.putStringSet("skins_owned", skinsOwned);
-                    }
-                    else{
+                    } else {
                         Toast.makeText(v.getContext(), "Недостаточно денег", Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;
             case R.id.card_3:
-                if (skinsOwned.contains("card_3")){
+                if (skinsOwned.contains("card_3")) {
                     editor.putInt("cardchosen", 3);
 
-                }
-                else{
+                } else {
                     int price = Integer.parseInt(getResources().getString(R.string.price_card3));
-                    if (shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) >= price){
+                    if (shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) >= price) {
                         editor.putInt("money", shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) - price);
                         editor.putInt("cardchosen", 3);
                         skinsOwned.add("card_3");
                         editor.putStringSet("skins_owned", skinsOwned);
-                    }
-                    else{
+                    } else {
                         Toast.makeText(v.getContext(), "Недостаточно денег", Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;
             case R.id.background_1:
-                if (skinsOwned.contains("background_1")){
+                if (skinsOwned.contains("background_1")) {
                     editor.putInt("backgroundchosen", 1);
-                }
-                else{
+                } else {
                     int price = Integer.parseInt(getResources().getString(R.string.price_background1));
-                    if (shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) >= price){
+                    if (shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) >= price) {
                         editor.putInt("money", shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) - price);
                         editor.putInt("backgroundchosen", 1);
                         skinsOwned.add("background_1");
                         editor.putStringSet("skins_owned", skinsOwned);
-                    }
-                    else{
+                    } else {
                         Toast.makeText(v.getContext(), "Недостаточно денег", Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;
             case R.id.background_2:
-                if (skinsOwned.contains("background_2")){
+                if (skinsOwned.contains("background_2")) {
                     editor.putInt("backgroundchosen", 2);
-                }
-                else{
+                } else {
                     int price = Integer.parseInt(getResources().getString(R.string.price_background3));
-                    if (shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) >= price){
+                    if (shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) >= price) {
                         editor.putInt("money", shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) - price);
                         editor.putInt("backgroundchosen", 2);
                         skinsOwned.add("background_2");
                         editor.putStringSet("skins_owned", skinsOwned);
-                    }
-                    else{
+                    } else {
                         Toast.makeText(v.getContext(), "Недостаточно денег", Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;
             case R.id.background_3:
-                if (skinsOwned.contains("background_3")){
+                if (skinsOwned.contains("background_3")) {
                     editor.putInt("backgroundchosen", 3);
-                }
-                else{
+                } else {
                     int price = Integer.parseInt(getResources().getString(R.string.price_background1));
-                    if (shPr.getInt("money", 1000) >= price){
+                    if (shPr.getInt("money", 1000) >= price) {
                         editor.putInt("money", shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) - price);
                         editor.putInt("backgroundchosen", 3);
                         skinsOwned.add("background_3");
                         editor.putStringSet("skins_owned", skinsOwned);
-                    }
-                    else{
+                    } else {
                         Toast.makeText(v.getContext(), "Недостаточно денег", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -199,7 +187,7 @@ public class Shop extends Fragment {
     }
 
     @SuppressLint("SetTextI18n")
-    public void update(View v){
+    public void update(View v) {
         TextView card1price = v.findViewById(R.id.card1price),
                 card2price = v.findViewById(R.id.card2price),
                 card3price = v.findViewById(R.id.card3price),
@@ -210,8 +198,8 @@ public class Shop extends Fragment {
         skinsOwned.add("card_1");
         skinsOwned.add("background_1");
         skinsOwned = shPr.getStringSet("skins_owned", skinsOwned);
-        for(String skin: skinsOwned)
-            switch (skin){
+        for (String skin : skinsOwned)
+            switch (skin) {
                 case "card_1":
                     card1price.setText("Имеется");
                     break;
@@ -231,7 +219,7 @@ public class Shop extends Fragment {
                     background3price.setText("Имеется");
                     break;
             }
-        switch (shPr.getInt("cardchosen", 1)){
+        switch (shPr.getInt("cardchosen", 1)) {
             case 1:
                 card1price.setText("Выбрано");
                 break;
@@ -242,7 +230,7 @@ public class Shop extends Fragment {
                 card3price.setText("Выбрано");
                 break;
         }
-        switch (shPr.getInt("backgroundchosen", 1)){
+        switch (shPr.getInt("backgroundchosen", 1)) {
             case 1:
                 background1price.setText("Выбрано");
                 break;

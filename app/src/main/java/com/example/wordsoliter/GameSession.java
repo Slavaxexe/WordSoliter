@@ -100,122 +100,128 @@ public class GameSession extends Thread {
                     cf = false;
                     break;
             }
-            if (!Arrays.asList(user_answer).contains("!")) {
-                boolean f = true;
-                for (int i = 0; i < user_answer.length; i++) {
-                    if (user_answer[i].charAt(0) != level.answers_words.get(level.answers_words.size() - 1).charAt(i)) {
-                        Toast.makeText(context, "Неправильное слово", Toast.LENGTH_SHORT).show();
-                        f = false;
-                        break;
-                    }
-                }
-                if (f) {
-                    Collections.sort(user_ind);
-                    if (!user_ind.equals(level.answers_ind.get(level.answers_ind.size() - 1))) {
-                        Toast.makeText(context, "Попробуй другие буквы", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(context, "Правильно!", Toast.LENGTH_SHORT).show();
-                        SharedPreferences.Editor editor = shPr.edit();
-                        Resources res = context.getResources();
-                        editor.putInt("money", shPr.getInt("money", res.getInteger(R.integer.moneydefualt)) + res.getInteger(R.integer.moneyforword));
-                        editor.apply();
-                        String query;
-                        Cursor cursor;
-                        ContentValues values = new ContentValues();
-                        query = "SELECT " + OpenDbHelper.COLUMN_WORDSMADE +
-                                " FROM " + OpenDbHelper.TABLE_NAME +
-                                " WHERE " + OpenDbHelper._ID + " = 1";
-                        cursor = dbHelper.getReadableDatabase().rawQuery(query, null);
-                        cursor.moveToFirst();
-                        values.put(OpenDbHelper.COLUMN_WORDSMADE,  cursor.getInt(cursor.getColumnIndexOrThrow(OpenDbHelper.COLUMN_WORDSMADE)) + 1);
-                        dbHelper.getWritableDatabase().update(OpenDbHelper.TABLE_NAME,
-                                values,
-                                null, null);
-                        cursor.close();
-                        level.answers_words.remove(level.answers_words.size() - 1);
-                        level.answers_ind.remove(level.answers_ind.size() - 1);
-                        for (int i = 0; i < user_ind.size(); i++) {
-                            level.get(user_ind.get(i)).remove(level.get(user_ind.get(i)).size() - 1);
-                        }
-                        if (level.answers_words.size() == 0) {
-
-                            isGameFinished = true;
-                            values = new ContentValues();
-                            switch (tier){
-                                case 1:
-                                    query = "SELECT " + OpenDbHelper.COLUMN_GAMESEWON +
-                                             " FROM " + OpenDbHelper.TABLE_NAME +
-                                            " WHERE " + OpenDbHelper._ID + " = 1";
-                                    cursor = dbHelper.getReadableDatabase().rawQuery(query, null);
-                                    cursor.moveToFirst();
-                                    values.put(OpenDbHelper.COLUMN_GAMESEWON, cursor.getInt(cursor.getColumnIndexOrThrow(OpenDbHelper.COLUMN_GAMESEWON)) + 1);
-                                    dbHelper.getWritableDatabase().update(OpenDbHelper.TABLE_NAME,
-                                            values,
-                                            null, null);
-                                    cursor.close();
-                                    break;
-                                case 2:
-                                    query = "SELECT " + OpenDbHelper.COLUMN_GAMESMWON +
-                                            " FROM " + OpenDbHelper.TABLE_NAME +
-                                            " WHERE " + OpenDbHelper._ID + " = 1";
-                                    cursor = dbHelper.getReadableDatabase().rawQuery(query, null);
-                                    cursor.moveToFirst();
-                                    values.put(OpenDbHelper.COLUMN_GAMESMWON, cursor.getInt(cursor.getColumnIndexOrThrow(OpenDbHelper.COLUMN_GAMESMWON)) + 1);
-                                    dbHelper.getWritableDatabase().update(OpenDbHelper.TABLE_NAME,
-                                            values,
-                                            null, null);
-                                    cursor.close();
-                                    break;
-                                case 3:
-                                    query = "SELECT " + OpenDbHelper.COLUMN_GAMESHWON +
-                                            " FROM " + OpenDbHelper.TABLE_NAME +
-                                            " WHERE " + OpenDbHelper._ID + " = 1";
-                                    cursor = dbHelper.getReadableDatabase().rawQuery(query, null);
-                                    cursor.moveToFirst();
-                                    values.put(OpenDbHelper.COLUMN_GAMESHWON, cursor.getInt(cursor.getColumnIndexOrThrow(OpenDbHelper.COLUMN_GAMESHWON)) + 1);
-                                    dbHelper.getWritableDatabase().update(OpenDbHelper.TABLE_NAME,
-                                            values,
-                                            null, null);
-                                    cursor.close();
-                                    break;
-                                case 4:
-                                    query = "SELECT " + OpenDbHelper.COLUMN_GAMESIWON +
-                                            " FROM " + OpenDbHelper.TABLE_NAME +
-                                            " WHERE " + OpenDbHelper._ID + " = 1";
-                                    cursor = dbHelper.getReadableDatabase().rawQuery(query, null);
-                                    cursor.moveToFirst();
-                                    values.put(OpenDbHelper.COLUMN_GAMESIWON, cursor.getInt(cursor.getColumnIndexOrThrow(OpenDbHelper.COLUMN_GAMESIWON)) + 1);
-                                    dbHelper.getWritableDatabase().update(OpenDbHelper.TABLE_NAME,
-                                            values,
-                                            null, null);
-                                    cursor.close();
-                                    break;
-
-                            }
-                            editor = shPr.edit();
-                            res = context.getResources();
-                            editor.putInt("money", shPr.getInt("money", res.getInteger(R.integer.moneydefualt)) + res.getInteger(R.integer.moneyforgame));
-                            editor.apply();
-                            returnToMenu();
-                        }
-                    }
-                }
-                if (!isGameFinished) {
-                    user_answer = new String[level.answers_words.get(level.answers_words.size() - 1).length()];
-                    Arrays.fill(user_answer, "!");
-                    user_ind.clear();
-                }
+            checkAnswers();
+            if (!isGameFinished) {
+                user_answer = new String[level.answers_words.get(level.answers_words.size() - 1).length()];
+                Arrays.fill(user_answer, "!");
+                user_ind.clear();
             }
         }
     }
-    public void returnToMenu(){
+
+    public void returnToMenu() {
         isGameFinished = true;
         Activity activity = (Activity) context;
         activity.finish();
     }
+
+    public void checkAnswers() {
+        if (!Arrays.asList(user_answer).contains("!")) {
+            boolean f = true;
+            for (int i = 0; i < user_answer.length; i++) {
+                if (user_answer[i].charAt(0) != level.answers_words.get(level.answers_words.size() - 1).charAt(i)) {
+                    Toast.makeText(context, "Неправильное слово", Toast.LENGTH_SHORT).show();
+                    f = false;
+                    break;
+                }
+            }
+            if (f) {
+                Collections.sort(user_ind);
+                if (!user_ind.equals(level.answers_ind.get(level.answers_ind.size() - 1))) {
+                    Toast.makeText(context, "Попробуй другие буквы", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, "Правильно!", Toast.LENGTH_SHORT).show();
+                    SharedPreferences.Editor editor = shPr.edit();
+                    Resources res = context.getResources();
+                    editor.putInt("money", shPr.getInt("money", res.getInteger(R.integer.moneydefualt)) + res.getInteger(R.integer.moneyforword));
+                    editor.apply();
+                    String query;
+                    Cursor cursor;
+                    ContentValues values = new ContentValues();
+                    query = "SELECT " + OpenDbHelper.COLUMN_WORDSMADE +
+                            " FROM " + OpenDbHelper.TABLE_NAME +
+                            " WHERE " + OpenDbHelper._ID + " = 1";
+                    cursor = dbHelper.getReadableDatabase().rawQuery(query, null);
+                    cursor.moveToFirst();
+                    values.put(OpenDbHelper.COLUMN_WORDSMADE, cursor.getInt(cursor.getColumnIndexOrThrow(OpenDbHelper.COLUMN_WORDSMADE)) + 1);
+                    dbHelper.getWritableDatabase().update(OpenDbHelper.TABLE_NAME,
+                            values,
+                            null, null);
+                    cursor.close();
+                    level.answers_words.remove(level.answers_words.size() - 1);
+                    level.answers_ind.remove(level.answers_ind.size() - 1);
+                    for (int i = 0; i < user_ind.size(); i++) {
+                        level.get(user_ind.get(i)).remove(level.get(user_ind.get(i)).size() - 1);
+                    }
+                    if (level.answers_words.size() == 0) {
+
+                        isGameFinished = true;
+                        values = new ContentValues();
+                        switch (tier) {
+                            case 1:
+                                query = "SELECT " + OpenDbHelper.COLUMN_GAMESEWON +
+                                        " FROM " + OpenDbHelper.TABLE_NAME +
+                                        " WHERE " + OpenDbHelper._ID + " = 1";
+                                cursor = dbHelper.getReadableDatabase().rawQuery(query, null);
+                                cursor.moveToFirst();
+                                values.put(OpenDbHelper.COLUMN_GAMESEWON, cursor.getInt(cursor.getColumnIndexOrThrow(OpenDbHelper.COLUMN_GAMESEWON)) + 1);
+                                dbHelper.getWritableDatabase().update(OpenDbHelper.TABLE_NAME,
+                                        values,
+                                        null, null);
+                                cursor.close();
+                                break;
+                            case 2:
+                                query = "SELECT " + OpenDbHelper.COLUMN_GAMESMWON +
+                                        " FROM " + OpenDbHelper.TABLE_NAME +
+                                        " WHERE " + OpenDbHelper._ID + " = 1";
+                                cursor = dbHelper.getReadableDatabase().rawQuery(query, null);
+                                cursor.moveToFirst();
+                                values.put(OpenDbHelper.COLUMN_GAMESMWON, cursor.getInt(cursor.getColumnIndexOrThrow(OpenDbHelper.COLUMN_GAMESMWON)) + 1);
+                                dbHelper.getWritableDatabase().update(OpenDbHelper.TABLE_NAME,
+                                        values,
+                                        null, null);
+                                cursor.close();
+                                break;
+                            case 3:
+                                query = "SELECT " + OpenDbHelper.COLUMN_GAMESHWON +
+                                        " FROM " + OpenDbHelper.TABLE_NAME +
+                                        " WHERE " + OpenDbHelper._ID + " = 1";
+                                cursor = dbHelper.getReadableDatabase().rawQuery(query, null);
+                                cursor.moveToFirst();
+                                values.put(OpenDbHelper.COLUMN_GAMESHWON, cursor.getInt(cursor.getColumnIndexOrThrow(OpenDbHelper.COLUMN_GAMESHWON)) + 1);
+                                dbHelper.getWritableDatabase().update(OpenDbHelper.TABLE_NAME,
+                                        values,
+                                        null, null);
+                                cursor.close();
+                                break;
+                            case 4:
+                                query = "SELECT " + OpenDbHelper.COLUMN_GAMESIWON +
+                                        " FROM " + OpenDbHelper.TABLE_NAME +
+                                        " WHERE " + OpenDbHelper._ID + " = 1";
+                                cursor = dbHelper.getReadableDatabase().rawQuery(query, null);
+                                cursor.moveToFirst();
+                                values.put(OpenDbHelper.COLUMN_GAMESIWON, cursor.getInt(cursor.getColumnIndexOrThrow(OpenDbHelper.COLUMN_GAMESIWON)) + 1);
+                                dbHelper.getWritableDatabase().update(OpenDbHelper.TABLE_NAME,
+                                        values,
+                                        null, null);
+                                cursor.close();
+                                break;
+
+                        }
+                        editor = shPr.edit();
+                        res = context.getResources();
+                        editor.putInt("money", shPr.getInt("money", res.getInteger(R.integer.moneydefualt)) + res.getInteger(R.integer.moneyforgame));
+                        editor.apply();
+                        returnToMenu();
+                    }
+                }
+            }
+        }
+    }
+
     public void getHint() {
         Resources res = context.getResources();
-        if(shPr.getInt("money", res.getInteger(R.integer.moneydefualt)) >= res.getInteger(R.integer.moneyforhint)) {
+        if (shPr.getInt("money", res.getInteger(R.integer.moneydefualt)) >= res.getInteger(R.integer.moneyforhint)) {
             Toast.makeText(context, level.answers_words.get(level.answers_words.size() - 1), Toast.LENGTH_LONG).show();
             String query;
             Cursor cursor;
@@ -233,8 +239,7 @@ public class GameSession extends Thread {
             SharedPreferences.Editor editor = shPr.edit();
             editor.putInt("money", shPr.getInt("money", res.getInteger(R.integer.moneydefualt)) - res.getInteger(R.integer.moneyforhint));
             editor.apply();
-        }
-        else {
+        } else {
             Toast.makeText(context, "Не хватает монет", Toast.LENGTH_SHORT).show();
         }
     }
@@ -267,7 +272,7 @@ public class GameSession extends Thread {
         }
     }
 
-    public void onCreate(){
+    public void onCreate() {
         dbHelper = new OpenDbHelper(context);
         LevelGenerator levelGenerator = null;
         try {

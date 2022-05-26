@@ -46,7 +46,8 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         gameSession.OnTouch(event);
         return true;
     }
-    public void getHint(){
+
+    public void getHint() {
         gameSession.getHint();
     }
 }

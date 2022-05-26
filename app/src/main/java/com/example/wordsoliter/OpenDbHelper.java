@@ -40,13 +40,11 @@ public class OpenDbHelper extends SQLiteOpenHelper {
                 + COLUMN_WORDSMADE + " INTEGER NOT NULL DEFAULT 0, "
                 + COLUMN_HINTSUSED + " INTEGER NOT NULL DEFAULT 0); ";
 
-        // Запускаем создание таблицы
+
         db.execSQL(SQL_CREATE_GUESTS_TABLE);
     }
 
-    /**
-     * Вызывается при обновлении схемы базы данных
-     */
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 

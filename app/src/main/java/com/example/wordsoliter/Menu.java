@@ -26,9 +26,11 @@ public class Menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        BottomNavigationView bnv=  findViewById(R.id.bottomNavigationView);
+        BottomNavigationView bnv = findViewById(R.id.bottomNavigationView);
         Set<Integer> a = new HashSet<>();
-        a.add(R.id.start); a.add(R.id.shop); a.add(R.id.statistics);
+        a.add(R.id.start);
+        a.add(R.id.shop);
+        a.add(R.id.statistics);
         NavHostFragment navHostFragment =
                 (NavHostFragment) fragmentManager.findFragmentById(R.id.fragmentContainerView);
         assert navHostFragment != null;
@@ -44,7 +46,7 @@ public class Menu extends AppCompatActivity {
                 OpenDbHelper.COLUMN_GAMESHWON,
                 OpenDbHelper.COLUMN_GAMESIWON,
                 OpenDbHelper.COLUMN_WORDSMADE,
-                OpenDbHelper.COLUMN_HINTSUSED };
+                OpenDbHelper.COLUMN_HINTSUSED};
 
 
         Cursor cursor = db.query(
@@ -68,6 +70,7 @@ public class Menu extends AppCompatActivity {
         }
         cursor.close();
     }
+
     @Override
     public void onPause() {
         // save your data

@@ -22,8 +22,6 @@ public class Statistics extends Fragment {
     }
 
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +42,7 @@ public class Statistics extends Fragment {
                 OpenDbHelper.COLUMN_GAMESHWON,
                 OpenDbHelper.COLUMN_GAMESIWON,
                 OpenDbHelper.COLUMN_WORDSMADE,
-                OpenDbHelper.COLUMN_HINTSUSED };
-
+                OpenDbHelper.COLUMN_HINTSUSED};
 
 
         try (Cursor cursor = db.query(
