@@ -168,7 +168,7 @@ public class Shop extends Fragment {
                 if (skinsOwned.contains("background_3")) {
                     editor.putInt("backgroundchosen", 3);
                 } else {
-                    int price = Integer.parseInt(getResources().getString(R.string.price_background1));
+                    int price = Integer.parseInt(getResources().getString(R.string.price_background3));
                     if (shPr.getInt("money", 1000) >= price) {
                         editor.putInt("money", shPr.getInt("money", getResources().getInteger(R.integer.moneydefualt)) - price);
                         editor.putInt("backgroundchosen", 3);
