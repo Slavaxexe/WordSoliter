@@ -215,7 +215,7 @@ public class GameSession extends Thread {
     public void getHint() {
         Resources res = context.getResources();
         if(shPr.getInt("money", res.getInteger(R.integer.moneydefualt)) >= res.getInteger(R.integer.moneyforhint)) {
-            Toast.makeText(context, level.answers_words.get(level.answers_words.size() - 1), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Правильный ответ: " + level.answers_words.get(level.answers_words.size() - 1), Toast.LENGTH_LONG).show();
             String query;
             Cursor cursor;
             ContentValues values = new ContentValues();

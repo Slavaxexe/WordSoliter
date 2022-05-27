@@ -21,7 +21,7 @@ public class SplashActivity extends AppCompatActivity {
         handler.postDelayed(r, 2000);
     }
     void start(){
-        Intent intent = new Intent(this, Menu.class);
+        Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
         finish();
     }
