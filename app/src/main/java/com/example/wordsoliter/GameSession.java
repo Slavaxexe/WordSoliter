@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GameSession extends Thread {
     private LevelGenerator.Level level;
@@ -315,8 +316,7 @@ public class GameSession extends Thread {
             case 3:
                 background = BitmapFactory.decodeResource(context.getResources(), R.drawable.background3);
         }
-
-        double scale = (double) canvas.getWidth() / 8 / cardback.getWidth();
+        double scale = (double) canvas.getWidth() / level.size() / cardback.getWidth();
         cardback = Bitmap.createScaledBitmap(cardback, (int) (cardback.getWidth() * scale), (int) (cardback.getHeight() * scale), true);
         cardfront = Bitmap.createScaledBitmap(cardfront, (int) (cardfront.getWidth() * scale), (int) (cardfront.getHeight() * scale), true);
         emptycard = Bitmap.createScaledBitmap(emptycard, (int) (emptycard.getWidth() * scale), (int) (emptycard.getHeight() * scale), true);

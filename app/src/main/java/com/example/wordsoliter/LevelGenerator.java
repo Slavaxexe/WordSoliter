@@ -2,6 +2,7 @@ package com.example.wordsoliter;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public class LevelGenerator {
@@ -16,8 +17,8 @@ public class LevelGenerator {
     public Level generateLevel(int tier) {
         int l = 0, r = 2000;
         int countWords = 10;
-        int minLenWord = 4;
-        int maxLenWord = 8;
+        int minLenWord = 3;
+        int maxLenWord = 6;
         int[] dictboards = {0, 2000, 10377, 14421, 93421};
         switch (tier) {
             case (1):
@@ -38,7 +39,7 @@ public class LevelGenerator {
                 break;
         }
         ArrayList<String> dictForLevel = new ArrayList<>(dictWords.subList(l, r));
-        dictForLevel = dictForLevel.stream().filter(x -> x.length() <= maxLenWord && x.length() >= minLenWord && x.length() != 7).collect(Collectors.toCollection(ArrayList::new));
+        dictForLevel = dictForLevel.stream().filter(x -> x.length() <= maxLenWord && x.length() >= minLenWord).collect(Collectors.toCollection(ArrayList::new));
         Collections.shuffle(dictForLevel);
         ArrayList<String> words = new ArrayList<>();
         for (int i = 0; i < countWords; i++) {
@@ -54,8 +55,8 @@ public class LevelGenerator {
         ArrayList<String> answers_words;
 
         Level(ArrayList<String> words) {
-            int CountColumn = words.get(0).length();
-
+            int CountColumn = ThreadLocalRandom.current().nextInt(6, 8 + 1);
+            if (CountColumn == 7) CountColumn = 8;
             for (int i = 0; i < words.size(); i++) {
                 if (words.get(i).length() > CountColumn) {
                     CountColumn = words.get(i).length();
