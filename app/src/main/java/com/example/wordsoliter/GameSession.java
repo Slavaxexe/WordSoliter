@@ -42,7 +42,7 @@ public class GameSession extends Thread {
     private final Paint backgroundPaint = new Paint();
     private volatile boolean isGameStarted = false, isGameFinished = false;
     private String[] user_answer;
-    private final ArrayList<Integer> user_ind;
+    private Integer[] user_ind;
     private final Context context;
     private CardDeck deck;
 
@@ -53,7 +53,6 @@ public class GameSession extends Thread {
 
 
     public GameSession(Context context, SurfaceHolder surfaceHolder, int tier) {
-        user_ind = new ArrayList<>();
         this.context = context;
         this.surfaceHolder = surfaceHolder;
         this.tier = tier;
@@ -70,12 +69,19 @@ public class GameSession extends Thread {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN: // нажатие
                     int column = Math.round(deck.onTouch(x, y).get(0));
-                    if (column != -1 && !cf && !user_ind.contains(column)) {
+                    if (column != -1 && !cf && !Arrays.asList(user_ind).contains(column)) {
                         cardcoords[0] = x;
                         cardcoords[1] = y;
                         cardletter = level.get(column).get(level.get(column).size() - 1);
                         cardc = column;
                         cf = true;
+                    }
+                    else {
+                        column = deck.onUp(x, y);
+                        if (column != -1 && !user_answer[column].equals("!")){
+                            user_answer[column] = "!";
+                            user_ind[column] = -1;
+                        }
                     }
                     break;
                 case MotionEvent.ACTION_MOVE: // движение
@@ -88,7 +94,7 @@ public class GameSession extends Thread {
                     if (ind != -1 && cardletter != null) {
                         if (user_answer[ind].equals("!")) {
                             user_answer[ind] = cardletter;
-                            user_ind.add(cardc);
+                            user_ind[ind] = cardc;
                         }
                     }
                     cardc = -1;
@@ -110,8 +116,10 @@ public class GameSession extends Thread {
                 }
             }
             if (f) {
-                Collections.sort(user_ind);
-                if (!user_ind.equals(level.answers_ind.get(level.answers_ind.size() - 1))) {
+                ArrayList<Integer> user_indAr = new ArrayList<>(Arrays.asList(user_ind));
+                user_indAr.removeIf( (Integer v) -> v == -1);
+                Collections.sort(user_indAr);
+                if (!user_indAr.equals(level.answers_ind.get(level.answers_ind.size() - 1))) {
                     Toast.makeText(context, "Попробуй другие буквы", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(context, "Правильно!", Toast.LENGTH_SHORT).show();
@@ -134,8 +142,10 @@ public class GameSession extends Thread {
                     cursor.close();
                     level.answers_words.remove(level.answers_words.size() - 1);
                     level.answers_ind.remove(level.answers_ind.size() - 1);
-                    for (int i = 0; i < user_ind.size(); i++) {
-                        level.get(user_ind.get(i)).remove(level.get(user_ind.get(i)).size() - 1);
+                    for (Integer integer : user_ind) {
+                        if (integer != -1) {
+                            level.get(integer).remove(level.get(integer).size() - 1);
+                        }
                     }
                     if (level.answers_words.size() == 0) {
 
@@ -203,7 +213,8 @@ public class GameSession extends Thread {
             if (!isGameFinished) {
                 user_answer = new String[level.answers_words.get(level.answers_words.size() - 1).length()];
                 Arrays.fill(user_answer, "!");
-                user_ind.clear();
+                user_ind = new Integer[level.answers_words.get(level.answers_words.size() - 1).length()];
+                Arrays.fill(user_ind, -1);
             }
         }
     }
@@ -244,10 +255,10 @@ public class GameSession extends Thread {
         onCreate();
         user_answer = new String[level.answers_words.get(level.answers_words.size() - 1).length()];
         Arrays.fill(user_answer, "!");
-        for (String i : user_answer) Log.v("agde", i);
+        user_ind = new Integer[level.answers_words.get(level.answers_words.size() - 1).length()];
+        Arrays.fill(user_ind, -1);
         isGameStarted = true;
         isGameFinished = false;
-        Log.e("card", String.valueOf(cardcoords[0]));
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setTextSize(100);
         while (running && !isGameFinished) {

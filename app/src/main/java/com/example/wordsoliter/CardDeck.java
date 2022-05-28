@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CardDeck {
     LevelGenerator.Level level;
@@ -51,7 +52,7 @@ public class CardDeck {
         }
     }
 
-    public void drawDeck(Canvas canvas, ArrayList<Integer> user_ind, int cardc) {
+    public void drawDeck(Canvas canvas, Integer[] user_ind, int cardc) {
         float x = 0;
         h = cardHeight / 6;
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -63,7 +64,7 @@ public class CardDeck {
                 drawCard(canvas, cardback, x, y, null, paint);
                 y += h;
             }
-            if (!user_ind.contains(i) && level.get(i).size() != 0 && i != cardc)
+            if (!Arrays.asList(user_ind).contains(i) && level.get(i).size() != 0 && i != cardc)
                 drawCard(canvas, cardfront, x, y, level.get(i).get(level.get(i).size() - 1), paint);
             x += (float) width / level.size();
         }
@@ -85,7 +86,7 @@ public class CardDeck {
 
 
     public ArrayList<Integer> onTouch(float x, float y) {
-        int column = (int) (x / width * level.size());
+        int column = (int) (x / cardWidth);
         ArrayList<Integer> a = new ArrayList<>();
         if ((level.get(column).size() - 1) * (h) < y && (level.get(column).size() - 1) * (h) + cardHeight > y) {
             a.add(column);
