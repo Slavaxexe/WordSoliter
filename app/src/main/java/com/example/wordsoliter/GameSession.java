@@ -12,7 +12,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.widget.Toast;
@@ -25,7 +24,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class GameSession extends Thread {
     private LevelGenerator.Level level;
@@ -107,15 +105,15 @@ public class GameSession extends Thread {
     }
     public void checkAnswers(){
         if (Arrays.stream(user_answer).noneMatch("!"::equals)) {
-            boolean f = true;
+            boolean rightWord = true;
             for (int i = 0; i < user_answer.length; i++) {
                 if (user_answer[i].charAt(0) != level.answers_words.get(level.answers_words.size() - 1).charAt(i)) {
                     Toast.makeText(context, "Неправильное слово", Toast.LENGTH_SHORT).show();
-                    f = false;
+                    rightWord = false;
                     break;
                 }
             }
-            if (f) {
+            if (rightWord) {
                 ArrayList<Integer> user_indAr = new ArrayList<>(Arrays.asList(user_ind));
                 user_indAr.removeIf( (Integer v) -> v == -1);
                 Collections.sort(user_indAr);
@@ -277,7 +275,6 @@ public class GameSession extends Thread {
             }
         }
     }
-
     public void onCreate(){
         dbHelper = new OpenDbHelper(context);
         LevelGenerator levelGenerator = null;
